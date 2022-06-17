@@ -58,8 +58,8 @@ body {
   padding: 0.5rem;
   color: white;
   width: 100%;
-  /* background-color: #ff5252; */
-  background-image: linear-gradient(to right, 	#cb2d3e, #ef473a);
+  background-color: #ff5252;
+  /* background-image: linear-gradient(to right, 	#cb2d3e, #ef473a); */
   transition: left 500ms;
   -webkit-transition: left 500ms;
   -moz-transition: left 500ms;
@@ -267,4 +267,17 @@ body {
   -moz-transform: rotate(45deg) translate(3px, 2px);
   -ms-transform: rotate(45deg) translate(3px, 2px);
   -o-transform: rotate(45deg) translate(3px, 2px);
+}
+
+.alert-box.success {
+  padding: 1rem;
+  width: 100%;
+  color: darkgreen;
+  border: 2px solid #26cc00;
+  background-color: #d2f2d4;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }

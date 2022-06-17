@@ -1,3 +1,13 @@
+<?php
+
+    require "./partials/_connection.php";
+
+    $categoriesFetchingSql = "SELECT * FROM `categories`";
+    $categoriesFetchingResult = mysqli_query($conn, $categoriesFetchingSql);
+    $categoriesFetchingArray = mysqli_fetch_all($categoriesFetchingResult, MYSQLI_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,32 +39,16 @@
     <main id="categories">
         <div class="categories-container">
             <h2 class="category__header">Browse Categories</h2>
+            <?php foreach($categoriesFetchingArray as $categories => $category): ?>
             <div class="category">
-                <h2 class="category__heading">PHP Forum</h2>
+                <h2 class="category__heading"><?php echo htmlspecialchars($category['category_name']) ?> Forum</h2>
                 <div class="category--padding">
-                    <h5 class="category__title">PHP</h5>
-                    <p class="category__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, vel.lorem10 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem necessitatibus non magnam ea natus. Minus natus explicabo adipisci provident. Nam distinctio tempora enim facilis delectus corporis debitis, facere libero sit?</p>
-                    <a class="category__btn" href="thread-list.php">Explore</a>
+                    <h5 class="category__title"><?php echo htmlspecialchars($category['category_name']) ?></h5>
+                    <p class="category__description"><?php echo htmlspecialchars($category['category_description']) ?></p>
+                    <a class="category__btn" href="thread-list.php?category_id=<?php echo htmlspecialchars($category['category_id']) ?>">Explore</a>
                 </div>
             </div>
-
-            <div class="category">
-                <h2 class="category__heading">Javascript Forum</h2>
-                <div class="category--padding">
-                    <h5 class="category__title">Javascript</h5>
-                    <p class="category__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, vel.lorem10 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem necessitatibus non magnam ea natus. Minus natus explicabo adipisci provident. Nam distinctio tempora enim facilis delectus corporis debitis, facere libero sit?</p>
-                    <a class="category__btn" href="">Explore</a>
-                </div>
-            </div>
-
-            <div class="category">
-                <h2 class="category__heading">React Forum</h2>
-                <div class="category--padding">
-                    <h5 class="category__title">React</h5>
-                    <p class="category__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, vel.lorem10 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem necessitatibus non magnam ea natus. Minus natus explicabo adipisci provident. Nam distinctio tempora enim facilis delectus corporis debitis, facere libero sit?</p>
-                    <a class="category__btn" href="">Explore</a>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </main>
 

@@ -110,13 +110,19 @@ main {
     }
 }
 
+.mb-2 {
+  display: block;
+  margin-bottom: 2rem;
+  color: #cb2d3e;
+  padding: 0.5rem;
+}
+
 .thread-title, .thread-description {
     width: 100%;
     padding: 1rem;
     border: 1px solid transparent;
     outline: 0;
     font-size: 1.2rem;
-    margin-bottom: 2rem;
     font-family: inherit;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -181,6 +187,7 @@ main {
     -o-transition: transform 200ms;
     cursor: pointer;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    word-wrap: break-word !important;
 }
 
 .thread:hover {
