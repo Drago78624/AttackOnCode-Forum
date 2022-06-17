@@ -19,11 +19,10 @@
             </form>
             <ul class="navbar__links">
                 <li class="navbar__links--link"><a href="index.php"> Home </a></li>
-                <li class="navbar__links--link"><a href=""> Top Categories</a></li>
-                <li class="navbar__links--link"><a href=""> About</a></li>
-                <li class="navbar__links--link"><a href=""> Contact</a></li>
-                <li class="navbar__links--link"><a href=""> Login</a></li>
-                <li class="navbar__links--link signupBtn"> <a href=""> Signup</a></li>
+                <li class="navbar__links--link"><a href="about.php"> About</a></li>
+                <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
+                <li class="navbar__links--link loginBtn"><a href="login.php"> Login</a></li>
+                <li class="navbar__links--link signupBtn"> <a href="signup.php"> Signup</a></li>
             </ul>
         </div>
 
