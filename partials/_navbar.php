@@ -4,9 +4,9 @@
             <a href="index.php">AttackOnCode</a>
         </div>
         <div class="navbar__dropdown-items">
-            <form class="navbar__form" action="">
+            <form class="navbar__form" action="search-results.php" method="GET">
                 <div class="navbar__search-container">
-                    <input class="navbar__searchbar" type="text" placeholder="Search Threads">
+                    <input class="navbar__searchbar" name="searched-item" type="text" placeholder="Search Threads">
                     <div class="navbar__search-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -20,9 +20,13 @@
             <ul class="navbar__links">
                 <li class="navbar__links--link"><a href="index.php"> Home </a></li>
                 <li class="navbar__links--link"><a href="about.php"> About</a></li>
-                <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
-                <li class="navbar__links--link loginBtn"><a href="login.php"> Login</a></li>
-                <li class="navbar__links--link signupBtn"> <a href="signup.php"> Signup</a></li>
+                <?php if(!isset($_SESSION['loggedin'])): ?>
+                    <li class="navbar__links--link loginBtn"><a href="login.php"> Login</a></li>
+                    <li class="navbar__links--link signupBtn"> <a href="signup.php"> Signup</a></li>
+                <?php else: ?>
+                    <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
+                    <li class="navbar__links--link signupBtn"> <a href="logout.php"> Logout</a></li>
+                <?php endif; ?>
             </ul>
         </div>
 

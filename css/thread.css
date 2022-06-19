@@ -1,8 +1,8 @@
 main {
-    background-color: rgb(235, 234, 234);
+    background-color: var(--bg);
   }
 
-  #thread, .add-comment, #commentlist{
+  #thread, .add-comment, #commentlist, #nothing{
     padding:  2rem 1rem;
     max-width: 992px;
     margin: 0 auto;
@@ -11,7 +11,8 @@ main {
 
 .thread {
     display: block;
-    background-color: white;
+    background-color: var(--card);
+
     padding: 1rem;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -20,7 +21,7 @@ main {
     -o-border-radius: 5px;
     margin-bottom: 2rem;
     cursor: pointer;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--bs);
 }
 
 
@@ -28,9 +29,26 @@ main {
     margin-bottom: 1rem;
 }
 
+.thread-heading {
+    color: var(--lightBlue);
+}
+
+.thread-desc {
+    color: var(--text);
+}
+
+.username-heading {
+    color: var(--lightBlue);
+}
+
+.username {
+    color: var(--text);
+}
+
 .add-comment-heading {
     text-align: center;
     margin-bottom: 1rem;
+    color: var(--lightBlue);
 }
 
 @media screen and (min-width: 1100px) {
@@ -39,10 +57,12 @@ main {
     }
 }
 
-.comment-description {
+.comment-description, .comment-code {
     width: 100%;
     padding: 1rem;
     border: 1px solid transparent;
+    color: var(--text);
+    background-color: var(--card);
     outline: 0;
     font-size: 1.2rem;
     font-family: inherit;
@@ -53,17 +73,21 @@ main {
     -o-border-radius: 5px;
 }
 
-.comment-description:focus {
-    border: 1px solid #cb2d3e;
+.comment-description::placeholder, .comment-code::placeholder {
+    color: var(--placeholder);
+}
+
+.comment-description:focus, .comment-code:focus {
+    border-color: var(--lightBlue);
 }
 
 .add-comment-btn {
     font-size: 1.2rem;
     padding: 0.5em 1em;
     font-weight: 500;
-    background-color: #ef473a;
-    color: white;
-    border: 0;
+    background-color: var(--lightBlue);
+    color: var(--veryDarkBlue);
+    border: 1px solid var(--lightBlue);
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -78,19 +102,40 @@ main {
 }
 
 .add-comment-btn:hover {
-    background-color: #cb2d3e;
+    background-color: var(--veryDarkBlue);
+    color: var(--lightBlue);
 }
+
+.nothing-box {
+    padding: 2rem;
+    font-size: 2rem;
+    background-color: var(--card);
+    color: var(--text);
+    font-weight: 500;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+  }
+  
+  @media screen and (min-width: 1100px) {
+    .nothing-box {
+      padding: 3rem;
+    }
+  }
 
 .mb-2 {
     display: block;
     margin-bottom: 2rem;
-    color: #cb2d3e;
-    padding: 0.5rem;
+    color: var(--validation);
+    padding: 0.5rem 0 0 0.5rem;
   }
 
 .commentlist-heading {
     text-align: center;
     margin-bottom: 1rem;
+    color: var(--lightBlue);
 }
 
 @media screen and (min-width: 1100px) {
@@ -101,7 +146,7 @@ main {
 
 .comment {
     display: block;
-    background-color: white;
+    background-color: var(--card);
     padding: 1rem;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -115,9 +160,14 @@ main {
     -ms-transition: transform 200ms;
     -o-transition: transform 200ms;
     cursor: pointer;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--bsh);
 }
 
 .comment-heading {
     margin-bottom: 1rem;
+    color: var(--lightBlue);
+}
+
+.comment-desc {
+    color: var(--text);
 }

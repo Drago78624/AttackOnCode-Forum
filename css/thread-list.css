@@ -1,8 +1,8 @@
 main {
-    background-color: rgb(235, 234, 234);
+    background-color: var(--bg);
   }
   
-  .category-container, .post-thread, #threadlist {
+  .category-container, .post-thread, #threadlist, #nothing {
     padding:  2rem 1rem;
     max-width: 992px;
     margin: 0 auto;
@@ -22,7 +22,7 @@ main {
   .category {
     margin-bottom: 2rem;
     border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--bs);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     -ms-border-radius: 10px;
@@ -30,40 +30,34 @@ main {
   }
   
   .category__heading {
-    text-align: center;
-    padding: 1rem;
-    /* background-color: #ff5252; */
-    background-image: linear-gradient(to right bottom, 	#cb2d3e, #ef473a);
-    color: white;
+    background-color: var(--card);
+    color: var(--lightBlue);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-  }
-  
-  .category__title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    padding: 2rem !important;
+
   }
   
   .category__description {
     margin-bottom: 2rem;
+    color: var(--text);
   }
   
   .category--padding {
-    padding: 1.5rem;
-    border-right: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    background-color: white;
+    padding: 0 2rem 2.5rem 2rem;
+    background-color: var(--card);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
   }
   
   .category__btn {
-    padding: 0.5rem 0.7rem;
-    background-color: #ffbaba;
+    background-color: var(--lightBlue);
     font-weight: 500;
-    color: #ff0000;
+    color: var(--veryDarkBlue);
     border-radius: 5px;
+    border: 1px solid var(--lightBlue);
+    padding: 0.8rem 2rem;
+    font-size: 1.4rem;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
@@ -77,8 +71,8 @@ main {
   }
   
   .category__btn:hover {
-    color: white;
-    background-color: #ff7b7b;
+    color: var(--lightBlue);
+    background-color: var(--veryDarkBlue);
   }
   
   @media screen and (min-width: 1100px) {
@@ -102,6 +96,7 @@ main {
 .post-thread-heading {
     text-align: center;
     margin-bottom: 1rem;
+    color: var(--lightBlue);
 }
 
 @media screen and (min-width: 1100px) {
@@ -113,13 +108,16 @@ main {
 .mb-2 {
   display: block;
   margin-bottom: 2rem;
-  color: #cb2d3e;
-  padding: 0.5rem;
+  color: var(--validation);
+  padding-left: 0.5rem;
+  padding-top: 0.5rem;
 }
 
-.thread-title, .thread-description {
+.thread-title, .thread-description, .thread-code {
     width: 100%;
     padding: 1rem;
+    background-color: var(--card);
+    color: var(--text);
     border: 1px solid transparent;
     outline: 0;
     font-size: 1.2rem;
@@ -131,17 +129,21 @@ main {
     -o-border-radius: 5px;
 }
 
-.thread-description:focus, .thread-title:focus {
-    border: 1px solid #cb2d3e;
+.thread-title::placeholder, .thread-description::placeholder, .thread-code::placeholder {
+  color: var(--placeholder);
+}
+
+.thread-description:focus, .thread-title:focus, .thread-code:focus {
+    border-color: var(--lightBlue);
 }
 
 .post-thread-btn {
     font-size: 1.2rem;
     padding: 0.5em 1em;
     font-weight: 500;
-    background-color: #ef473a;
-    color: white;
-    border: 0;
+    background-color: var(--lightBlue);
+    color: var(--veryDarkBlue);
+    border: 1px solid var(--lightBlue);
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -156,11 +158,32 @@ main {
 }
 
 .post-thread-btn:hover {
-    background-color: #cb2d3e;
+    background-color: var(--veryDarkBlue);
+    color: var(--lightBlue);
+}
+
+.nothing-box {
+  padding: 2rem;
+  font-size: 2rem;
+  background-color: var(--card);
+  color: var(--text);
+  font-weight: 500;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+@media screen and (min-width: 1100px) {
+  .nothing-box {
+    padding: 3rem;
+  }
 }
 
 .threadlist-heading {
     text-align: center;
+    color: var(--lightBlue);
     margin-bottom: 1rem;
 }
 
@@ -172,7 +195,8 @@ main {
 
 .thread {
     display: block;
-    background-color: white;
+    background-color: var(--card);
+    color: var(--text);
     padding: 1rem;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -186,7 +210,7 @@ main {
     -ms-transition: transform 200ms;
     -o-transition: transform 200ms;
     cursor: pointer;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--bs);
     word-wrap: break-word !important;
 }
 
@@ -196,11 +220,12 @@ main {
     -moz-transform: scale(1.02);
     -ms-transform: scale(1.02);
     -o-transform: scale(1.02);
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--bsh);
 }
 
 .thread-heading {
     margin-bottom: 1rem;
+    color: var(--lightBlue);
 }
 
 

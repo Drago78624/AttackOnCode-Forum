@@ -1,4 +1,8 @@
-#threadlist {
+main {
+  background-color: var(--bg);
+  height: 80vh;
+}
+#threadlist, #nothing {
     padding:  2rem 1rem;
     max-width: 992px;
     margin: 0 auto;
@@ -7,6 +11,7 @@
 .search-results-heading {
     text-align: center;
     margin-bottom: 1rem;
+    color: var(--lightBlue);
 }
 
 @media screen and (min-width: 1100px) {
@@ -15,9 +20,28 @@
     }
 }
 
+.nothing-box {
+    padding: 2rem;
+    font-size: 2rem;
+    background-color: var(--card);
+    color: var(--text);
+    font-weight: 500;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+  }
+  
+  @media screen and (min-width: 1100px) {
+    .nothing-box {
+      padding: 3rem;
+    }
+  }
+
 .thread {
     display: block;
-    background-color: white;
+    background-color: var(--card);
     padding: 1rem;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -31,7 +55,7 @@
     -ms-transition: transform 200ms;
     -o-transition: transform 200ms;
     cursor: pointer;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--bs);
 }
 
 .thread:hover {
@@ -40,9 +64,14 @@
     -moz-transform: scale(1.02);
     -ms-transform: scale(1.02);
     -o-transform: scale(1.02);
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--bsh);
 }
 
 .thread-heading {
     margin-bottom: 1rem;
+    color: var(--lightBlue);
+}
+
+.thread-desc {
+  color: var(--text);
 }

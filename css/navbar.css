@@ -1,7 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 :root {
-  --navbar__boxshadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --veryDarkBlue: #06283D;
+  --darkBlue: #1363DF;
+  --lightBlue: #47B5FF;
+  --veryLightBlue: #DFF6FF;
+  --black: black;
+  --bg: #1f293a;
+  --card: #334057;
+  --text: #bfd6ff;
+  --validation: #ff5d6d;
+    --bs: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    --bsh: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    --placeholder: #708ab9;
 }
 
 *,
@@ -31,7 +42,10 @@ body {
 }
 
 .navbar-container {
-  box-shadow: var(--navbar__boxshadow);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  /* background-color: var(--black); */
+  background-color: #1b1f25;
+  
 }
 
 .navbar {
@@ -48,6 +62,7 @@ body {
   font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
+  color: var(--veryLightBlue);
 }
 
 .navbar__dropdown-items {
@@ -56,10 +71,8 @@ body {
   left: -100%;
   top: 56px;
   padding: 0.5rem;
-  color: white;
   width: 100%;
-  background-color: #ff5252;
-  /* background-image: linear-gradient(to right, 	#cb2d3e, #ef473a); */
+  background-color: var(--veryDarkBlue);
   transition: left 500ms;
   -webkit-transition: left 500ms;
   -moz-transition: left 500ms;
@@ -70,14 +83,14 @@ body {
 @media screen and (min-width: 640px) {
   .navbar__dropdown-items {
     position: static;
-    background-color: white;
+    background-color: #1b1f25;
     padding: 0;
     width: auto;
   }
 
   .navbar__links {
     position: absolute;
-    background-color: #ff5252;
+    background-color: var(--veryDarkBlue);
     width: 100%;
     left: -200%;
     top: 72px;
@@ -87,7 +100,7 @@ body {
 
   .navbar__search-container {
     padding: 0 !important;
-    max-width: 300px;
+    /* max-width: 300px; */
   }
 
   .navbar__searchbar {
@@ -106,8 +119,8 @@ body {
   }
 
   .navbar__search-icon:hover {
-    background-color: #ff7b7b !important;
-    color: white !important;
+    background-color: var(--lightBlue) !important;
+    color: var(--veryDarkBlue) !important;
   }
 
   .navbar__brand {
@@ -119,7 +132,7 @@ body {
   .navbar__links {
     position: static;
     display: flex;
-    background-color: white;
+    background-color: #1b1f25;
     width: auto;
     padding: 0;
     margin-left: auto;
@@ -132,7 +145,7 @@ body {
 
   .navbar__links--link:hover,
   .navbar__links--link:active {
-    color: #ff0000 !important;
+    color: var(--lightBlue) !important;
     transition: color 200ms;
     -webkit-transition: color 200ms;
     -moz-transition: color 200ms;
@@ -141,7 +154,7 @@ body {
   }
 
   .signupBtn {
-    color: #ff0000 !important;
+    color: var(--lightBlue) !important;
     transition: background-color 200ms, color 100ms;
     -webkit-transition: background-color 200ms, color 100ms;
     -moz-transition: background-color 200ms, color 100ms;
@@ -150,8 +163,8 @@ body {
   }
 
   .signupBtn:hover {
-    background-color: #ff7b7b !important;
-    color: white !important;
+    background-color: var(--lightBlue) !important;
+    color: var(--veryDarkBlue) !important;
   }
 
 
@@ -160,8 +173,13 @@ body {
     width: 100%;
   }
 
-  .navbar__search-container {
-    margin-right: auto;
+
+  .navbar__form{
+    margin-left: auto;
+  }
+
+  .navbar__searchbar {
+    min-width: 400px;
   }
 
   .navbar__hamburger {
@@ -197,8 +215,9 @@ body {
 
 .navbar__search-icon {
   padding: 0.5rem;
-  background-color: #ffbaba;
-  color: #ff0000;
+  background-color: var(--veryDarkBlue);
+  color:  var(--lightBlue);
+  border: 1px solid var(--lightBlue);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -207,7 +226,7 @@ body {
 .navbar__links--link {
   font-size: 1rem;
   padding: 0.6rem 0;
-  color: #fdc7c7;
+  color: var(--veryLightBlue) !important;
   cursor: pointer;
 }
 
@@ -216,8 +235,9 @@ body {
 }
 
 .signupBtn {
-  background-color: #ffbaba;
-  color: red;
+  background-color: var(--veryDarkBlue);
+  color: var(--lightBlue) !important;
+  border: 1px solid var(--lightBlue);
   padding: 0.5rem 0.7rem;
   display: inline-block;
   border-radius: 5px;
@@ -234,7 +254,7 @@ body {
   width: 25px;
   height: 3px;
   margin-bottom: 4px;
-  background-color: #ff0000;
+  background-color:   var(--lightBlue);
   transition: transform 200ms, opacity 200ms;
   -webkit-transition: transform 200ms, opacity 200ms;
   -moz-transition: transform 200ms, opacity 200ms;
@@ -270,6 +290,8 @@ body {
 }
 
 .alert-box.success {
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
   width: 100%;
   color: darkgreen;
@@ -280,4 +302,8 @@ body {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
+}
+
+.alert-box.success .close-icon{
+  cursor: pointer;
 }

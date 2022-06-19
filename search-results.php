@@ -1,3 +1,12 @@
+<?php 
+    require "./partials/_connection.php";
+
+    $searchedItem = $_GET['searched-item'];
+    $sql = "SELECT * FROM `threads` WHERE MATCH (`thread_title`, `thread_desc`) against ('$searchedItem')";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    // print_r($row);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,17 +25,22 @@
     <?php include "./partials/_navbar.php" ?>
     <main>
     <section id="threadlist">
-            <h1 class="search-results-heading">Search Results for - <em> 'honolulu'</em> : </h1>
+            <h1 class="search-results-heading">Search Results for - <em> '<?php echo htmlspecialchars($searchedItem); ?>'</em> : </h1>
             <div class="threadlist-container">
-                <a class="thread" href="thread.php">
-                    <h3 class="thread-heading">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Id, inventore.</h3>
-                    <p class="thread-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore illum at incidunt distinctio, est libero minima. Neque obcaecati distinctio repudiandae.</p>
+                <?php if($row): ?>
+                <?php foreach($row as $searchedThread => $thread): ?>
+                <a class="thread" href="thread.php?thread_id=<?php echo htmlspecialchars($thread['thread_id']);?>">
+                    <h3 class="thread-heading"><?php echo htmlspecialchars($thread['thread_title']) ?></h3>
+                    <p class="thread-desc"><?php echo substr(htmlspecialchars($thread['thread_desc']), 0, 250) ?>......</p>
                 </a>
-
-                <a class="thread" href="">
-                    <h3 class="thread-heading">Thread Title</h3>
-                    <p class="thread-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore illum at incidunt distinctio, est libero minima. Neque obcaecati distinctio repudiandae.</p>
-                </a>
+                <?php endforeach; ?>
+                <?php else: ?>
+                <section id="nothing">
+                    <div class="nothing-box">
+                        <p>No threads available according to your query !</p>
+                    </div>
+            </section>
+                <?php endif; ?>
             </div>
         </section>
     </main>
