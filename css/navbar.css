@@ -3,7 +3,8 @@
 :root {
   --veryDarkBlue: #06283D;
   --darkBlue: #1363DF;
-  --lightBlue: #47B5FF;
+  /* --lightBlue: #47B5FF; */
+  --lightBlue: #40a3e6;
   --veryLightBlue: #DFF6FF;
   --black: black;
   --bg: #1f293a;

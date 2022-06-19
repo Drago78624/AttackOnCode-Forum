@@ -228,4 +228,28 @@ main {
     color: var(--lightBlue);
 }
 
+.thread-desc {
+  max-width: 750px;
+}
+
+.number-of-threads {
+  margin-top: 2rem;
+  color: var(--lightBlue);
+  display: flex;
+  margin-left: 0.5rem;
+  align-items: center;
+}
+
+.number-of-threads img {
+  margin-left: 0.5rem;
+}
+
+@media screen and (min-width: 640px) {
+  .btn-info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+}
+
 

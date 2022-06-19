@@ -50,9 +50,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/navbar.css">
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/thread-list.css">
@@ -102,9 +99,21 @@
             <div class="threadlist-container">
                 <?php if($threadsFetchingArray): ?>
                 <?php foreach($threadsFetchingArray as $threads => $thread): ?>
+                <?php
+                    $thread_id = $thread['thread_id'];
+                    $countingCommentsSql = "SELECT COUNT(*) FROM `comments` WHERE thread_id = '$thread_id'";
+                    $countingCommentsResult = mysqli_query($conn, $countingCommentsSql);
+                    $commentCount = mysqli_fetch_array($countingCommentsResult);
+                ?>
                 <a class="thread" href="thread.php?thread_id=<?php echo htmlspecialchars($thread['thread_id']) ?>">
                     <h3 class="thread-heading"><?php echo htmlspecialchars($thread['thread_title']) ?></h3>
-                    <p class="thread-desc"><?php echo substr(htmlspecialchars($thread['thread_desc']), 0, 250) ?>......</p>
+                    <div class="btn-info-container">
+                        <p class="thread-desc"><?php echo substr(htmlspecialchars($thread['thread_desc']), 0, 250) ?>......</p>
+                        <div class="number-of-threads">
+                        <span><?php echo htmlspecialchars($commentCount[0]); ?> comments</span>
+                            <img src="assets/icons8-chat-24.png" alt="">
+                        </div>
+                    </div>
                 </a>
                 <?php endforeach; ?>
                 <?php else: ?>
