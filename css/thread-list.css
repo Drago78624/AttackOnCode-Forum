@@ -56,7 +56,7 @@ main {
     color: var(--veryDarkBlue);
     border-radius: 5px;
     border: 1px solid var(--lightBlue);
-    padding: 0.8rem 2rem;
+    padding: 0.8em 2em;
     font-size: 1.4rem;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -69,6 +69,12 @@ main {
     -ms-transition: color 100ms, background-color 200ms;
     -o-transition: color 100ms, background-color 200ms;
   }
+
+@media screen and (max-width: 640px) {
+  .category__btn {
+    font-size: 1rem;
+  }
+}
   
   .category__btn:hover {
     color: var(--lightBlue);
@@ -232,7 +238,7 @@ main {
   max-width: 750px;
 }
 
-.number-of-threads {
+.number-of-threads, .likes {
   margin-top: 2rem;
   color: var(--lightBlue);
   display: flex;
@@ -240,8 +246,15 @@ main {
   align-items: center;
 }
 
-.number-of-threads img {
+.number-of-threads img, .likes button {
   margin-left: 0.5rem;
+}
+
+.likes button {
+  background-color: transparent;
+  border: 0;
+  color: white;
+  margin-right: 1rem;
 }
 
 @media screen and (min-width: 640px) {
@@ -251,5 +264,3 @@ main {
   align-items: center;
 }
 }
-
-
