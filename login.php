@@ -28,8 +28,11 @@
         }
 
         if($email && $password){
-            $loginSql = "SELECT * FROM `users` WHERE user_email = '$email'";
-            $loginResult = mysqli_query($conn, $loginSql);
+            //$loginSql = "SELECT * FROM `users` WHERE user_email = '$email'";
+            $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE user_email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $loginResult = $stmt->get_result();
             $num = mysqli_num_rows($loginResult);
 
             if($num){
