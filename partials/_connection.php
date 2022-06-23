@@ -5,6 +5,6 @@
     $password = '';
     $database = 'attack_on_code';
 
-    $conn = mysqli_connect($serverName, $userName, $password, $database);
+    $mysqli = new mysqli($serverName, $userName, $password, $database);
 
 ?>

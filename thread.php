@@ -6,14 +6,21 @@
 
     $thread_id = $_GET['thread_id'];
 
-    $threadFetchingSql = "SELECT * FROM `threads` WHERE thread_id = '$thread_id'";
-    $threadFetchingResult = mysqli_query($conn, $threadFetchingSql);
+    // $threadFetchingSql = "SELECT * FROM `threads` WHERE thread_id = '$thread_id'";
+    $stmt =  $mysqli->prepare("SELECT * FROM `threads` WHERE thread_id = ?");
+    $stmt->bind_param("i", $thread_id);
+    $stmt->execute();
+    // $countingCommentsResult = $stmt->get_result();
+    $threadFetchingResult = $stmt->get_result();
     $threadFetchingArray = mysqli_fetch_assoc($threadFetchingResult);
 
     $user_id = $threadFetchingArray['thread_user_id'];
     
-    $usernameFetchingSql = "SELECT * FROM `users` WHERE user_id = '$user_id'";
-    $usernameFetchingResult = mysqli_query($conn, $usernameFetchingSql);
+    // $usernameFetchingSql = "SELECT * FROM `users` WHERE user_id = '$user_id'";
+    $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $usernameFetchingResult = $stmt->get_result();
     $usernameFetchingArray = mysqli_fetch_assoc($usernameFetchingResult);
 
     // print_r($usernameFetchingArray['user_name']);
@@ -29,11 +36,14 @@
 
     if(isset($_POST['addComment'])){
         if(!empty($_POST['comment_description'])){
-            $comment_description = mysqli_real_escape_string($conn, $_POST['comment_description']);
-            $comment_code = mysqli_real_escape_string($conn, $_POST['comment_code']);
+            $comment_description = $mysqli->real_escape_string($_POST['comment_description']);
+            $comment_code =$mysqli->real_escape_string($_POST['comment_code']);
     
-            $commentAddingSql = "INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES ('$comment_description', '$comment_code', '$thread_id', '$user_idC');";
-            $commentAddingResult = mysqli_query($conn, $commentAddingSql);
+            // $commentAddingSql = "INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES ('$comment_description', '$comment_code', '$thread_id', '$user_idC');";
+            $stmt =  $mysqli->prepare("INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES (?, ?, ?, ?);");
+            $stmt->bind_param("ssii", $comment_description,$comment_code,$thread_id,$user_idC);
+            $stmt->execute();
+            $commentAddingResult = $stmt->get_result();
 
             if($commentAddingResult){
                 $showAlert = true;
@@ -44,8 +54,11 @@
 
     }
 
-    $commentsFetchingSql = "SELECT * FROM `comments` WHERE thread_id = '$thread_id'";
-    $commentsFetchingResult = mysqli_query($conn, $commentsFetchingSql);
+    // $commentsFetchingSql = "SELECT * FROM `comments` WHERE thread_id = '$thread_id'";
+    $stmt =  $mysqli->prepare("SELECT * FROM `comments` WHERE thread_id = ?");
+    $stmt->bind_param("i", $thread_id);
+    $stmt->execute();
+    $commentsFetchingResult =  $stmt->get_result();
     $commentsFetchingArray = mysqli_fetch_all($commentsFetchingResult, MYSQLI_ASSOC);
 ?>
 
@@ -112,8 +125,11 @@
                 <?php foreach($commentsFetchingArray as $comments => $comment): ?>
                 <?php 
                     $cuser_id = $comment['user_id'];
-                    $cusernameFetchingSql = "SELECT * FROM `users` WHERE user_id = '$cuser_id'";
-                    $cusernameFetchingResult = mysqli_query($conn, $cusernameFetchingSql);
+                    //$cusernameFetchingSql = "SELECT * FROM `users` WHERE user_id = '$cuser_id'";
+                    $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE user_id = ?");
+                    $stmt->bind_param("i", $cuser_id);
+                    $stmt->execute();
+                    $cusernameFetchingResult = $stmt->get_result();
                     $cusernameFetchingArray = mysqli_fetch_assoc($cusernameFetchingResult);   
                 ?>
                 <div class="comment" href="thread.php">

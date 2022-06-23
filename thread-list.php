@@ -6,8 +6,11 @@
 
     $category_id = $_GET['category_id'];
 
-    $categoryFetchingSql = "SELECT * FROM `categories` WHERE category_id = '$category_id'";
-    $categoryFetchingResult = mysqli_query($conn, $categoryFetchingSql);
+    // $categoryFetchingSql = "SELECT * FROM `categories` WHERE category_id = '$category_id'";
+    $stmt =  $mysqli->prepare("SELECT * FROM `categories` WHERE category_id = ?");
+    $stmt->bind_param("i", $category_id);
+    $stmt->execute();
+    $categoryFetchingResult = $stmt->get_result();
     $categoryFetchingArray = mysqli_fetch_assoc($categoryFetchingResult);
 
     // FUNCTIONALITY FOR POSTING THREADS
@@ -18,12 +21,15 @@
     }
 
     if(isset($_POST['postThread'])){
-        $thread_title = mysqli_real_escape_string($conn, $_POST['thread_title']);
-        $thread_description = mysqli_real_escape_string($conn, $_POST['thread_description']);
-        $thread_code = mysqli_real_escape_string($conn, $_POST['thread_code']);
+        $thread_title = $mysqli->real_escape_string($_POST['thread_title']);
+        $thread_description = $mysqli->real_escape_string($_POST['thread_description']);
+        $thread_code = $mysqli->real_escape_string($_POST['thread_code']);
         if(!empty($_POST['thread_title']) && !empty($_POST['thread_description'])){
-            $threadPostingSql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES ('$thread_title', '$thread_description', '$thread_code', '$category_id', '$user_id')";
-            $threadPostingResult = mysqli_query($conn, $threadPostingSql);
+            // $threadPostingSql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES ('$thread_title', '$thread_description', '$thread_code', '$category_id', '$user_id')";
+            $stmt =  $mysqli->prepare("INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssii", $thread_title, $thread_description, $thread_code,$category_id,$user_id);
+            $stmt->execute();
+            $threadPostingResult = $stmt->get_result();
     
             if($threadPostingResult){
                 $showAlert = true;
@@ -39,8 +45,11 @@
         }
     }
 
-    $threadsFetchingSql = "SELECT * FROM `threads` WHERE thread_cat_id = '$category_id'";
-    $threadsFetchingResult = mysqli_query($conn, $threadsFetchingSql);
+    // $threadsFetchingSql = "SELECT * FROM `threads` WHERE thread_cat_id = '$category_id'";
+    $stmt =  $mysqli->prepare("SELECT * FROM `threads` WHERE thread_cat_id = ?");
+    $stmt->bind_param("i", $category_id);
+    $stmt->execute();
+    $threadsFetchingResult = $stmt->get_result();
     $threadsFetchingArray = mysqli_fetch_all($threadsFetchingResult, MYSQLI_ASSOC);
 
 ?>
@@ -101,8 +110,11 @@
                 <?php foreach($threadsFetchingArray as $threads => $thread): ?>
                 <?php
                     $thread_id = $thread['thread_id'];
-                    $countingCommentsSql = "SELECT COUNT(*) FROM `comments` WHERE thread_id = '$thread_id'";
-                    $countingCommentsResult = mysqli_query($conn, $countingCommentsSql);
+                    // $countingCommentsSql = "SELECT COUNT(*) FROM `comments` WHERE thread_id = '$thread_id'";
+                    $stmt =  $mysqli->prepare("SELECT COUNT(*) FROM `comments` WHERE thread_id = ?");
+                    $stmt->bind_param("i", $thread_id);
+                    $stmt->execute();
+                    $countingCommentsResult = $stmt->get_result();
                     $commentCount = mysqli_fetch_array($countingCommentsResult);
                 ?>
                 <a class="thread" href="thread.php?thread_id=<?php echo htmlspecialchars($thread['thread_id']) ?>">
