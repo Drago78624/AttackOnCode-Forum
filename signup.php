@@ -43,14 +43,25 @@
             if($password != $cpassword){
                 $errMsgCPassword = "Passwords do not match";
             }else {
-                $existenceCheckingSql = "SELECT user_email FROM `users` WHERE user_email = '$email'";
-                $existenceCheckingResult = mysqli_query($conn, $existenceCheckingSql);
+                //$existenceCheckingSql = "SELECT user_email FROM `users` WHERE user_email = '$email'";
+                $stmt =  $mysqli->prepare("SELECT user_email FROM `users` WHERE user_email = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $existenceCheckingResult = $stmt->get_result();
                 $num = mysqli_num_rows($existenceCheckingResult);
                 if($num){
                     $errMsgEmail = "User already exists";
                 }else {
-                    $signupSql = "INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES ('$fullName', '$email', '$hash');";
-                    $signupResult = mysqli_query($conn, $signupSql);
+                    //$signupSql = "INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES ('$fullName', '$email', '$hash');";
+                    $stmt =  $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES (?, ?, ?);");
+                    $stmt->bind_param("sss", $fullName, $email, $hash);
+                    $stmt->execute();
+                    $signupResult = $stmt->get_result();
+
+                    $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE user_email = ?");
+                    $stmt->bind_param("s", $email);
+                    $stmt->execute();
+                    $signupResult = $stmt->get_result();
                     if($signupResult){
                         $showAlert = true;
                         $errMsgName = $errMsgEmail = $errMsgCPassword = $errMsgPassword = $fullName = $email = $password = $cpassword = "";

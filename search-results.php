@@ -2,9 +2,17 @@
     require "./partials/_connection.php";
 
     $searchedItem = $_GET['searched-item'];
-    $sql = "SELECT * FROM `threads` WHERE MATCH (`thread_title`, `thread_desc`) against ('$searchedItem')";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    // $sql = "SELECT * FROM `threads` WHERE MATCH (`thread_title`, `thread_desc`) against ('$searchedItem')";
+    // $result = mysqli_query($conn, $sql);
+
+    $stmt =  $mysqli->prepare("SELECT * FROM `threads` WHERE MATCH (`thread_title`, `thread_desc`) against (?)");
+    $stmt->bind_param("s", $searchedItem);
+    $stmt->execute();
+    $categoryFetchingResult = $stmt->get_result();
+
+    $row = mysqli_fetch_all($categoryFetchingResult, MYSQLI_ASSOC);
+
+    
     // print_r($row);
 ?>
 <!DOCTYPE html>

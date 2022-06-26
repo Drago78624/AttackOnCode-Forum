@@ -3,8 +3,11 @@
 
     require "./partials/_connection.php";
 
-    $categoriesFetchingSql = "SELECT * FROM `categories`";
-    $categoriesFetchingResult = mysqli_query($conn, $categoriesFetchingSql);
+    //$categoriesFetchingSql = "SELECT * FROM `categories`";
+    $stmt =  $mysqli->prepare("SELECT * FROM `categories`");
+    //$stmt->bind_param("s", $email);
+    $stmt->execute();
+    $categoriesFetchingResult = $stmt->get_result();
     $categoriesFetchingArray = mysqli_fetch_all($categoriesFetchingResult, MYSQLI_ASSOC);
 
 ?>
@@ -41,8 +44,11 @@
             <?php foreach($categoriesFetchingArray as $categories => $category): ?>
             <?php
                     $thread_cat_id = $category['category_id'];
-                    $countingThreadsSql = "SELECT COUNT(*) FROM `threads` WHERE thread_cat_id = '$thread_cat_id'";
-                    $countingThreadsResult = mysqli_query($conn, $countingThreadsSql);
+                    //$countingThreadsSql = "SELECT COUNT(*) FROM `threads` WHERE thread_cat_id = '$thread_cat_id'";
+                    $stmt =  $mysqli->prepare("SELECT COUNT(*) FROM `threads` WHERE thread_cat_id = ?");
+                    $stmt->bind_param("i", $thread_cat_id);
+                    $stmt->execute();
+                    $countingThreadsResult = $stmt->get_result();
                     $threadCount = mysqli_fetch_array($countingThreadsResult);
             ?>
             <div class="category">

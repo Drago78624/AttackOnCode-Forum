@@ -28,14 +28,17 @@
         }
 
         if($email && $password){
-            $loginSql = "SELECT * FROM `users` WHERE user_email = '$email'";
-            $loginResult = mysqli_query($conn, $loginSql);
+            //$loginSql = "SELECT * FROM `users` WHERE user_email = '$email'";
+            $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE user_email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $loginResult = $stmt->get_result();
             $num = mysqli_num_rows($loginResult);
 
             if($num){
                 $row = mysqli_fetch_assoc($loginResult);
                 if(password_verify($password, $row['user_password'])){
-                    session_start();
+                    session_start(['cookie_lifetime' => 143200,'cookie_secure' => true,'cookie_httponly' => true, "cookie_samesite" => "Strict"]);
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $row['user_name'];
                     $_SESSION['user_id'] = $row['user_id'];
