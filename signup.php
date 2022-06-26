@@ -38,6 +38,7 @@
             $cpassword = test_input($_POST['cpassword']);
         }
         
+        $token = bin2hex(random_bytes(15));
 
         if($fullName && $email && $password && $cpassword){
             if($password != $cpassword){
@@ -53,8 +54,8 @@
                     $errMsgEmail = "User already exists";
                 }else {
                     //$signupSql = "INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES ('$fullName', '$email', '$hash');";
-                    $stmt =  $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES (?, ?, ?);");
-                    $stmt->bind_param("sss", $fullName, $email, $hash);
+                    $stmt =  $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`, `token`, `status`) VALUES (?, ?, ?, ?, 'inactive');");
+                    $stmt->bind_param("ssss", $fullName, $email, $hash, $token);
                     $stmt->execute();
                     $signupResult = $stmt->get_result();
 
@@ -63,6 +64,19 @@
                     $stmt->execute();
                     $signupResult = $stmt->get_result();
                     if($signupResult){
+
+                        $subject="Email Verification";
+                        $body="Hi $fullName, Click on the link below to activate you AttackOnCode account
+                               http://localhost/AttackOnCode/email-verification.php?token=$token";
+                        $headers="From: maazahmed78624@gmail.com";
+
+                        if(mail($email, $subject, $body, $headers)){
+                            $_SESSION['verify_msg'] = "Please check mail and verify your account $email";
+                            header("location: login.php");
+                        }else{
+                            echo"Email sending failed ...";
+                        }
+
                         $showAlert = true;
                         $errMsgName = $errMsgEmail = $errMsgCPassword = $errMsgPassword = $fullName = $email = $password = $cpassword = "";
                     }
