@@ -18,6 +18,7 @@
     -ms-border-radius: 10px;
     -o-border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
 }
 
 .login-heading {
@@ -29,12 +30,30 @@
     border-top-right-radius: 10px;
 }
 
-.login-form {
-    padding: 1rem;
+form {
+    padding-top: 1rem;
 }
 
+
+.form-text-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-text {
+    color: var(--text);
+    text-align: center;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.form-text a:hover {
+    color: var(--lightBlue);
+}
+
+
 @media screen and (min-width:640px) {
-    .login-form {
+    .login-container {
         padding: 2rem;
     }
 }

@@ -67,6 +67,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,6 +77,7 @@
     <link rel="stylesheet" href="./css/login.css">
     <title>AttackOnCode - Login</title>
 </head>
+
 <body>
     <?php include "./partials/_navbar.php" ?>
     <?php if (isset($_SESSION['verify_msg'])): ?>
@@ -83,25 +85,31 @@
         <p class="alert-msg"><?php echo htmlspecialchars($_SESSION['verify_msg']) ?></p>
         <div class="close-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="feather feather-x">
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-x">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </div>
     </div>
-<?php endif; ?>
+    <?php endif; ?>
     <main class="login-section">
         <div class="login-container">
             <h1 class="login-heading">Login</h1>
             <div class="login">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST"  class="login-form">
-                <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email);?>" placeholder="Email">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" class="login-form">
+                    <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email);?>"
+                        placeholder="Email">
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgEmail) ?></span>
-                    <input type="password" name="password" id="password" value="<?php echo htmlspecialchars($password);?>" placeholder="Password">
+                    <input type="password" name="password" id="password"
+                        value="<?php echo htmlspecialchars($password);?>" placeholder="Password">
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgPassword) ?></span>
                     <input type="submit" name="login" value="Login">
                 </form>
+                <div class="form-text-container">
+                    <p class="form-text"><a href="recover.php">Forgot password ? </a></p>
+                    <p class="form-text"><a href="signup.php">Create account</a></p>
+                </div>
             </div>
         </div>
     </main>
@@ -110,4 +118,5 @@
 
     <script src="./script/app.js"></script>
 </body>
+
 </html>

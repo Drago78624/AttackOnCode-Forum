@@ -1,4 +1,4 @@
-.signup-section {
+.recover-section {
     padding: 1rem;
     height: 80vh;
     display: flex;
@@ -7,7 +7,7 @@
     background-color: var(--bg);
 
 }
-.signup-container {
+.recover-container {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
@@ -22,7 +22,7 @@
 
 }
 
-.signup-heading {
+.recover-heading {
     color: var(--lightBlue);
     text-align: center;
     background-color: var(--card);
@@ -42,18 +42,13 @@
     color: var(--lightBlue);
 }
 
-form {
-    padding-top: 1rem;
-}
-
-
 @media screen and (min-width:640px) {
-    .signup-container {
+    .recover-container {
         padding: 2rem;
     }
 }
 
-.signup-form input {
+.recover-form input {
     display: block;
     width: 100%;
     font-size: 1.2rem;
@@ -65,7 +60,7 @@ form {
     color: var(--text);
 }
 
-.signup-form input::placeholder { 
+.recover-form input::placeholder { 
     color: var(--placeholder);
   }
 
@@ -77,7 +72,7 @@ form {
     color: #ff5d6d;
 }
 
-.signup-form input[type="submit"] {
+.recover-form input[type="submit"] {
     background-color: var(--lightBlue);
     color: var(--veryDarkBlue);
     border: 1px solid var(--lightBlue);
@@ -90,11 +85,11 @@ form {
     cursor: pointer;
 }
 
-.signup-form input[type="submit"]:hover {
+.recover-form input[type="submit"]:hover {
     background-color: var(--bg);
     color: var(--lightBlue);
 }
 
-.signup-form input:active, input:focus {
+.recover-form input:active, input:focus {
     border-bottom-color: var(--lightBlue);
 }
