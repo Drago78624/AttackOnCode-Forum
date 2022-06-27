@@ -1,4 +1,5 @@
 <?php 
+    session_start();
     require "./partials/_connection.php";
 
     $errMsgEmail = $errMsgPassword = $email = $password = "";
@@ -36,18 +37,30 @@
             $num = mysqli_num_rows($loginResult);
 
             if($num){
-                $row = mysqli_fetch_assoc($loginResult);
-                if(password_verify($password, $row['user_password'])){
-                    session_start(['cookie_lifetime' => 143200,'cookie_secure' => true,'cookie_httponly' => true, "cookie_samesite" => "Strict"]);
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION['username'] = $row['user_name'];
-                    $_SESSION['user_id'] = $row['user_id'];
-                    header("Location: index.php");
+
+                $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE status = 'active' AND user_email = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $statusCheckResult = $stmt->get_result();
+                $statusNum = mysqli_num_rows($statusCheckResult);
+
+                if($statusNum){
+                    $row = mysqli_fetch_assoc($statusCheckResult);
+                    if(password_verify($password, $row['user_password'])){
+                        session_start(['cookie_lifetime' => 143200,'cookie_secure' => true,'cookie_httponly' => true, "cookie_samesite" => "Strict"]);
+                        $_SESSION['loggedin'] = true;
+                        $_SESSION['username'] = $row['user_name'];
+                        $_SESSION['user_id'] = $row['user_id'];
+                        header("Location: index.php");
+                    }else {
+                        $errMsgPassword = "Bad email or password";
+                    }
                 }else {
-                    $errMsgPassword = "Wrong Password";
+                    $_SESSION['verify_msg'] = "Account is not verified yet check your mail to verify";
                 }
+
             }else {
-                $errMsgEmail = "User does not exist";
+                $errMsgEmail = "Bad email or password";
             }
         }
     }
@@ -65,6 +78,19 @@
 </head>
 <body>
     <?php include "./partials/_navbar.php" ?>
+    <?php if (isset($_SESSION['verify_msg'])): ?>
+    <div class="alert-box success">
+        <p class="alert-msg"><?php echo htmlspecialchars($_SESSION['verify_msg']) ?></p>
+        <div class="close-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="feather feather-x">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+    </div>
+<?php endif; ?>
     <main class="login-section">
         <div class="login-container">
             <h1 class="login-heading">Login</h1>

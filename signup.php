@@ -82,32 +82,22 @@ if (isset($_POST['signup'])) {
                         $mail->Password = $_ENV['PASSWORD'];
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                         $mail->Port = 25;
-                        $mail->setFrom($_ENV['USERNAME'], 'Mailer');
+                        $mail->setFrom($_ENV['USERNAME'], 'AttackOnCode');
                         $mail->addAddress($email, 'Joe User');
                         $mail->isHTML(true);                                  //Set email format to HTML
-                        $mail->Subject = 'Here is the subject';
+                        $mail->Subject = 'Email Verification';
                         $mail->Body = "Hi $fullName, Click on the link below to activate you AttackOnCode account
 //                               http://localhost/AttackOnCode/email-verification.php?token=$token";
                         $mail->send();
-                        echo 'Message has been sent';
+                        // echo 'Message has been sent';
+                        session_start();
                         $_SESSION['verify_msg'] = "Please check mail and verify your account $email";
-                        //header("location: login.php");
+                        header("location: login.php");
+
                     } catch (Exception $e) {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                     }
-//                    $subject = "Email Verification";
-//                    $body = "Hi $fullName, Click on the link below to activate you AttackOnCode account
-//                               http://localhost/AttackOnCode/email-verification.php?token=$token";
-//                    $headers = "From: maazahmed78624@gmail.com";
-//
-//                    if (mail($email, $subject, $body, $headers)) {
-//                        $_SESSION['verify_msg'] = "Please check mail and verify your account $email";
-//                        header("location: login.php");
-//                    } else {
-//                        echo "Email sending failed ...";
-//                    }
 
-                    $showAlert = true;
                     $errMsgName = $errMsgEmail = $errMsgCPassword = $errMsgPassword = $fullName = $email = $password = $cpassword = "";
                 }
             }

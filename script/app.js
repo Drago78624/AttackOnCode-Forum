@@ -17,9 +17,9 @@ searchIcon.addEventListener("click", ()=>{
   console.log("submitted");
 })
 
-setTimeout(() => {
-  alertBox.remove()
-}, 3000);
+// setTimeout(() => {
+//   alertBox.remove()
+// }, 3000);
 
 closeIcon.addEventListener("click", ()=>{
   alertBox.remove();
