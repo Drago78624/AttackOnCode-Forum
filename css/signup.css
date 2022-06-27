@@ -42,7 +42,7 @@
     color: var(--lightBlue);
 }
 
-form {
+.signup-form {
     padding-top: 1rem;
 }
 

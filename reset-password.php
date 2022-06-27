@@ -34,25 +34,23 @@ if(isset($_GET['token'])){
                 $errMsgCPassword = "Passwords do not match";
             } else {
                 $stmt = $mysqli->prepare("UPDATE `users` SET user_password = ? WHERE token = ?");
-                $stmt->bind_param("ss", $password, $token);
+                $stmt->bind_param("ss", $hash, $token);
                 $stmt->execute();
                 $passwordResetResult = $stmt->get_result();
 
-                $stmt = $mysqli->prepare("SELECT * FROM `users` WHERE user_password = ? AND token = ?");
-                $stmt->bind_param("ss", $password, $token);
+                $stmt = $mysqli->prepare("SELECT * FROM `users` WHERE token = ?");
+                $stmt->bind_param("s", $token);
                 $stmt->execute();
                 $passwordResetResult = $stmt->get_result();
                 $num = mysqli_num_rows($passwordResetResult);
+                $row = mysqli_fetch_assoc($passwordResetResult);
 
-                if($num){
-                        $_SESSION['verify_msg'] = "Password reset completed successfully";
-                        header('location: login.php');
-                        // echo "reset completed";
+                if(password_verify($password, $row['user_password'])){
+                    $_SESSION['verify_msg'] = "Password reset completed successfully";
+                    header('location: login.php');
                 }else{
                     $_SESSION['verify_msg']="Something went wrongs";
                     header('location: login.php');
-                    // echo "something went wrong";
-
                 }
             }
         }
