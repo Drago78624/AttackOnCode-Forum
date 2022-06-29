@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 require "./partials/_connection.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -12,6 +14,7 @@ $dotenv->load();
 $mail = new PHPMailer(true);
 $errMsgEmail = $email = "";
 $showAlert = false;
+
 
 if (isset($_POST['recover'])) {
     function test_input($data)
@@ -40,7 +43,14 @@ if (isset($_POST['recover'])) {
             if ($num) {
                 $row = mysqli_fetch_assoc($existenceCheckingResult);
                 $username = $row['user_name'];
-                $token = $row['token'];
+                $userid = $row['user_id'];
+                $token = bin2hex(random_bytes(15));
+                $expireDate = date('Y/m/d H:i:s', strtotime("2 minutes"));
+
+                $stmt = $mysqli->prepare("INSERT INTO `token_service` (`user_id`, `token`, `token_of`, `expire_date`) VALUES (?, ?, 'password-recovery', ?)");
+                $stmt->bind_param("iss", $userid, $token, $expireDate);
+                $stmt->execute();
+                $existenceCheckingResult = $stmt->get_result();
                     try {
                         $mail->isSMTP();
                         $mail->Host = $_ENV['SMTP_SERVER'];
@@ -57,7 +67,7 @@ if (isset($_POST['recover'])) {
 //                               http://localhost/AttackOnCode/reset-password.php?token=$token";
                         $mail->send();
                         // echo 'Message has been sent';
-                        session_start();
+                        // session_start();
                         $_SESSION['recover_msg'] = "Check your mail to reset password of your account at $email";
                         $showAlert = true;
                         // header("location: login.php");

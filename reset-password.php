@@ -3,10 +3,36 @@
 require "./partials/_connection.php";
 
 $errMsgCPassword = $errMsgPassword = $password = $cpassword = "";
+$tokenExpire = false;
 $showAlert = false;
 
 if(isset($_GET['token'])){
     $token = $_GET['token'];
+    $stmt = $mysqli->prepare("SELECT * FROM `token_service` WHERE token = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $passwordResetResult = $stmt->get_result();
+    $num = mysqli_num_rows($passwordResetResult);
+
+    if(!$num){
+        $tokenExpire = true;
+    }else {
+        $row = mysqli_fetch_assoc($passwordResetResult);
+        $userid = $row['user_id'];
+        $today = date('Y/m/d H:i:s');
+        $expireDate = $row['expire_date'];
+        $today_dt = new DateTime($today);
+        $expire_dt = new DateTime($expireDate);
+
+        if ($expire_dt < $today_dt) { 
+            $tokenExpire = true;
+            $stmt = $mysqli->prepare("DELETE FROM `token_service` WHERE `token_service`.`user_id` = ?");
+            $stmt->bind_param("i", $userid);
+            $stmt->execute();
+            $passwordResetResult = $stmt->get_result();
+        }
+    }
+
 
     if (isset($_POST['reset-password'])) {
         function test_input($data)
@@ -33,19 +59,23 @@ if(isset($_GET['token'])){
             if ($password != $cpassword) {
                 $errMsgCPassword = "Passwords do not match";
             } else {
-                $stmt = $mysqli->prepare("UPDATE `users` SET user_password = ? WHERE token = ?");
-                $stmt->bind_param("ss", $hash, $token);
+                $stmt = $mysqli->prepare("UPDATE `users` SET user_password = ? WHERE user_id = ?");
+                $stmt->bind_param("si", $hash, $userid);
                 $stmt->execute();
                 $passwordResetResult = $stmt->get_result();
 
-                $stmt = $mysqli->prepare("SELECT * FROM `users` WHERE token = ?");
-                $stmt->bind_param("s", $token);
+                $stmt = $mysqli->prepare("SELECT * FROM `users` WHERE user_id = ?");
+                $stmt->bind_param("i", $userid);
                 $stmt->execute();
                 $passwordResetResult = $stmt->get_result();
                 $num = mysqli_num_rows($passwordResetResult);
                 $row = mysqli_fetch_assoc($passwordResetResult);
 
                 if(password_verify($password, $row['user_password'])){
+                    $stmt = $mysqli->prepare("DELETE FROM `token_service` WHERE `token_service`.`user_id` = ?");
+                    $stmt->bind_param("i", $userid);
+                    $stmt->execute();
+                    $passwordResetResult = $stmt->get_result();
                     $_SESSION['verify_msg'] = "Password reset completed successfully";
                     header('location: login.php');
                 }else{
@@ -92,6 +122,9 @@ if(isset($_GET['token'])){
     <?php endif; ?>
     <main class="reset-password-section">
         <div class="reset-password-container">
+            <?php if($tokenExpire): ?>
+                <h1 class="reset-password-heading">Token Expired !</h1>
+            <?php else: ?>
             <h1 class="reset-password-heading">Reset Password</h1>
             <div class="reset-password">
                 <form action="" method="POST" class="reset-password-form">
@@ -104,6 +137,7 @@ if(isset($_GET['token'])){
                     <input type="submit" name="reset-password" value="Rest password">
                 </form>
             </div>
+            <?php endif; ?>
         </div>
     </main>
     <?php include "./partials/_footer.php" ?>
