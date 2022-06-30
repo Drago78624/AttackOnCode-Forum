@@ -37,6 +37,8 @@
             $num = mysqli_num_rows($loginResult);
 
             if($num){
+                $row = mysqli_fetch_assoc($loginResult);
+                $userid = $row['user_id'];
 
                 $stmt =  $mysqli->prepare("SELECT * FROM `users` WHERE status = 'active' AND user_email = ?");
                 $stmt->bind_param("s", $email);
@@ -56,7 +58,16 @@
                         $errMsgPassword = "Bad email or password";
                     }
                 }else {
-                    $_SESSION['verify_msg'] = "Account is not verified yet check your mail to verify";
+                    $stmt =  $mysqli->prepare("SELECT * FROM `token_service` WHERE user_id = ?");
+                    $stmt->bind_param("s", $userid);
+                    $stmt->execute();
+                    $loginResult = $stmt->get_result();
+                    $num = mysqli_num_rows($loginResult);
+                    if($num){
+                        $_SESSION['verify_msg'] = "Account is not verified yet check your mail to verify";
+                    }else {
+                        $_SESSION['verify_msg'] = "Account is not verified yet <a class='sendMailBtn' href='send-mail.php?user_id=$userid'>Click Here</a> to send mail";
+                    }
                 }
 
             }else {
@@ -82,7 +93,7 @@
     <?php include "./partials/_navbar.php" ?>
     <?php if (isset($_SESSION['verify_msg'])): ?>
     <div class="alert-box success">
-        <p class="alert-msg"><?php echo htmlspecialchars($_SESSION['verify_msg']) ?></p>
+        <p class="alert-msg"><?php echo $_SESSION['verify_msg'] ?></p>
         <div class="close-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

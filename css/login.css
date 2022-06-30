@@ -1,3 +1,10 @@
+.sendMailBtn {
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 1px;
+    cursor: pointer;
+}
+
 .login-section {
     padding: 1rem;
     height: 79vh;

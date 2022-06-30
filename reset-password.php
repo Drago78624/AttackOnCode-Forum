@@ -8,7 +8,7 @@ $showAlert = false;
 
 if(isset($_GET['token'])){
     $token = $_GET['token'];
-    $stmt = $mysqli->prepare("SELECT * FROM `token_service` WHERE token = ?");
+    $stmt = $mysqli->prepare("SELECT * FROM `token_service` WHERE token = ? AND token_of = 'password-recovery'");
     $stmt->bind_param("s", $token);
     $stmt->execute();
     $passwordResetResult = $stmt->get_result();

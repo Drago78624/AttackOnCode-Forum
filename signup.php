@@ -63,9 +63,8 @@ if (isset($_POST['signup'])) {
             if ($num) {
                 $errMsgEmail = "User already exists";
             } else {
-                //$signupSql = "INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES ('$fullName', '$email', '$hash');";
-                $stmt = $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`, `token`, `status`) VALUES (?, ?, ?, ?, 'inactive');");
-                $stmt->bind_param("ssss", $fullName, $email, $hash, $token);
+                $stmt = $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`, `status`) VALUES (?, ?, ?, 'inactive');");
+                $stmt->bind_param("sss", $fullName, $email, $hash);
                 $stmt->execute();
                 $signupResult = $stmt->get_result();
 
@@ -73,7 +72,17 @@ if (isset($_POST['signup'])) {
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
                 $signupResult = $stmt->get_result();
+
                 if ($signupResult) {
+                    $row = mysqli_fetch_assoc($signupResult);
+                    $userid = $row['user_id'];
+                    $expireDate = date('Y/m/d H:i:s', strtotime("1 minute"));
+
+                    $stmt = $mysqli->prepare("INSERT INTO `token_service` (`user_id`, `token`, `token_of`, `expire_date`) VALUES (?, ?, 'email-verification', ?)");
+                    $stmt->bind_param("iss", $userid, $token, $expireDate);
+                    $stmt->execute();
+                    $signupResult = $stmt->get_result();
+                    
                     try {
                         $mail->isSMTP();
                         $mail->Host = $_ENV['SMTP_SERVER'];
