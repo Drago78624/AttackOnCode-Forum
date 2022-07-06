@@ -28,6 +28,10 @@ h1 {
     color: var(--red-1);
 }
 
+/* .title {
+    color: var(--black);
+} */
+
 p {
     font-size: 1.3rem;
     text-align: center;

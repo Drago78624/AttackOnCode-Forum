@@ -98,6 +98,11 @@ body {
   align-items: center;
 }
 
+.brand img {
+  width: 40px;
+  margin-right: 0.5rem;
+}
+
 @media screen and (max-width: 400px) {
   .brand-text {
     display: none;
