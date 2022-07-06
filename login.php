@@ -71,7 +71,7 @@
                 }
 
             }else {
-                $errMsgEmail = "Bad email or password";
+                $errMsgPassword = "Bad email or password";
             }
         }
     }
@@ -118,8 +118,8 @@
                     <input type="submit" name="login" value="Login">
                 </form>
                 <div class="form-text-container">
-                    <p class="form-text"><a href="recover.php">Forgot password ? </a></p>
-                    <p class="form-text"><a href="signup.php">Create account</a></p>
+                    <p class="form-text" style="font-weight: bold;"><a href="recover.php">Forgot password ? </a></p>
+                    <p class="form-text" style="font-weight: bold;"><a href="signup.php">Create account</a></p>
                 </div>
             </div>
         </div>

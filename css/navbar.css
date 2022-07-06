@@ -1,19 +1,41 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"); */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap'); */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700;800;900&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
+  --menu: #eeecec;
+  --nav-bg: #ffffff;
+  --nav-brand: black;
+  --black: #2d2d2d;
+  --gray: gray;
+  --lightgray: lightgray;
+  --red-2:#af2164; 
+  --red-1: #c82471; 
   --veryDarkBlue: #06283D;
   --darkBlue: #1363DF;
   /* --lightBlue: #47B5FF; */
   --lightBlue: #40a3e6;
   --veryLightBlue: #DFF6FF;
-  --black: black;
   --bg: #1f293a;
-  --card: #334057;
-  --text: #bfd6ff;
-  --validation: #ff5d6d;
+  --card-bg: hwb(0 96% 4%);
+  /* --text: #bfd6ff; */
+  --text: #505050;
+  --validation: #af2164;
     --bs: 3px 3px 10px rgba(0, 0, 0, 0.3);
     --bsh: 4px 4px 10px rgba(0, 0, 0, 0.4);
-    --placeholder: #708ab9;
+    --placeholder: #2d2d2d;
+}
+
+.text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500 !important;
+  letter-spacing: 1px;
+  line-height: 1.5;
 }
 
 *,
@@ -36,7 +58,10 @@ html {
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
+  /* font-family: 'Inconsolata', monospace; */
+  /* font-family: 'Source Code Pro', monospace; */
+  font-family: 'IBM Plex Mono', monospace;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,7 +70,8 @@ body {
 .navbar-container {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   /* background-color: var(--black); */
-  background-color: #1b1f25;
+  background-color: var(--nav-bg);
+  /* background-image: linear-gradient(to right, var(--nav-gradient-1), var(--red-1)); */
   
 }
 
@@ -60,20 +86,32 @@ body {
 }
 
 .navbar__brand {
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.5rem !important;
+  font-weight: 900;
+  letter-spacing: 2px;
   cursor: pointer;
-  color: var(--veryLightBlue);
+  color: var(--nav-brand);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 400px) {
+  .brand-text {
+    display: none;
+  }
 }
 
 .navbar__dropdown-items {
   position: absolute;
   z-index: 3;
   left: -100%;
-  top: 56px;
-  padding: 0.5rem;
+  top:70px;
+  padding: 1rem 0.5rem;
   width: 100%;
-  background-color: var(--veryDarkBlue);
+  background-color: var(--menu);
   transition: left 500ms;
   -webkit-transition: left 500ms;
   -moz-transition: left 500ms;
@@ -84,18 +122,19 @@ body {
 @media screen and (min-width: 640px) {
   .navbar__dropdown-items {
     position: static;
-    background-color: #1b1f25;
+    background-image: linear-gradient(var(--nav-bg), var(--nav-bg));
     padding: 0;
     width: auto;
   }
 
   .navbar__links {
     position: absolute;
-    background-color: var(--veryDarkBlue);
+    background-color: var(--menu);
     width: 100%;
     left: -200%;
     top: 72px;
     padding: 1rem;
+    padding-top: 0.5rem;
     transition: left 500ms;
   }
 
@@ -104,11 +143,18 @@ body {
     /* max-width: 300px; */
   }
 
-  .navbar__searchbar {
-    border-top: 1px solid lightgray !important;
-    border-left: 1px solid lightgray !important;
-    border-bottom: 1px solid lightgray !important;
+  /* .navbar__searchbar {
+    border-top: 1px solid gray !important;
+    border-left: 1px solid gray !important;
+    border-bottom: 1px solid gray !important;
   }
+
+  .navbar__searchbar:focus {
+    border-top-color: var(--red-1) !important;
+    border-left-color: var(--red-1) !important;
+    border-bottom-color: var(--red-1) !important;
+  } */
+
 
   .navbar__search-icon {
     cursor: pointer;
@@ -120,8 +166,8 @@ body {
   }
 
   .navbar__search-icon:hover {
-    background-color: var(--lightBlue) !important;
-    color: var(--veryDarkBlue) !important;
+    background-color: var(--red-2) !important;
+    /* color: var(--red-1) !important; */
   }
 
   .navbar__brand {
@@ -133,7 +179,8 @@ body {
   .navbar__links {
     position: static;
     display: flex;
-    background-color: #1b1f25;
+    align-items: center;
+    background-image: linear-gradient(var(--nav-bg), var(--nav-bg));
     width: auto;
     padding: 0;
     margin-left: auto;
@@ -146,7 +193,7 @@ body {
 
   .navbar__links--link:hover,
   .navbar__links--link:active {
-    color: var(--lightBlue) !important;
+    color: var(--red-1) !important;
     transition: color 200ms;
     -webkit-transition: color 200ms;
     -moz-transition: color 200ms;
@@ -154,8 +201,7 @@ body {
     -o-transition: color 200ms;
   }
 
-  .signupBtn {
-    color: var(--lightBlue) !important;
+  .signupBtn, .loginBtn {
     transition: background-color 200ms, color 100ms;
     -webkit-transition: background-color 200ms, color 100ms;
     -moz-transition: background-color 200ms, color 100ms;
@@ -163,9 +209,23 @@ body {
     -o-transition: background-color 200ms, color 100ms;
   }
 
-  .signupBtn:hover {
-    background-color: var(--lightBlue) !important;
-    color: var(--veryDarkBlue) !important;
+  .signupBtn {
+    color: var(--lightBlue) !important;
+  }
+
+  .loginBtn {
+    color: var(--black) !important;
+    margin-right: 0;
+  }
+
+  .signupBtn:hover{
+    background-color: var(--nav-bg) !important;
+    color: var(--red-1) !important;
+  }
+
+  .loginBtn:hover {
+    background-color: var(--nav-bg) !important;
+    color: var(--black) !important;
   }
 
 
@@ -182,6 +242,7 @@ body {
   .navbar__searchbar {
     min-width: 400px;
   }
+
 
   .navbar__hamburger {
     display: none;
@@ -214,11 +275,23 @@ body {
   font-family: inherit;
 }
 
+.navbar__searchbar {
+  border-top: 1px solid gray !important;
+  border-left: 1px solid gray !important;
+  border-bottom: 1px solid gray !important;
+}
+
+.navbar__searchbar:focus {
+  border-top-color: var(--red-1) !important;
+  border-left-color: var(--red-1) !important;
+  border-bottom-color: var(--red-1) !important;
+}
+
 .navbar__search-icon {
   padding: 0.5rem;
-  background-color: var(--veryDarkBlue);
-  color:  var(--lightBlue);
-  border: 1px solid var(--lightBlue);
+  background-color: var(--red-1);
+  color:  var(--nav-bg);
+  border: 1px solid var(--red-1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -227,7 +300,7 @@ body {
 .navbar__links--link {
   font-size: 1rem;
   padding: 0.6rem 0;
-  color: var(--veryLightBlue) !important;
+  color: var(--black) !important;
   cursor: pointer;
 }
 
@@ -235,10 +308,7 @@ body {
   color: white;
 }
 
-.signupBtn {
-  background-color: var(--veryDarkBlue);
-  color: var(--lightBlue) !important;
-  border: 1px solid var(--lightBlue);
+.signupBtn, .loginBtn {
   padding: 0.5rem 0.7rem;
   display: inline-block;
   border-radius: 5px;
@@ -250,12 +320,24 @@ body {
   margin-top: 0.2rem;
 }
 
+.signupBtn {
+  background-color: var(--red-1);
+  border: 1px solid var(--red-1);
+  color: var(--nav-bg) !important;
+}
+
+.loginBtn {
+  background-color: var(--black);
+  color: var(--nav-bg) !important;
+  border: 1px solid var(--black);
+}
+
 .navbar__hamburger .line {
   display: block;
   width: 25px;
   height: 3px;
   margin-bottom: 4px;
-  background-color:   var(--lightBlue);
+  background-color:   var(--red-1);
   transition: transform 200ms, opacity 200ms;
   -webkit-transition: transform 200ms, opacity 200ms;
   -moz-transition: transform 200ms, opacity 200ms;
@@ -308,3 +390,20 @@ body {
 .alert-box.success .close-icon{
   cursor: pointer;
 }
+
+
+::-webkit-scrollbar {
+  width: 0.7em;
+}
+
+::-webkit-scrollbar-track {
+  background-color: lightgray;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--red-1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--red-2);
+} 

@@ -3,27 +3,21 @@
   text-align: center;
   padding: 1rem;
   font-weight: 600;
-  background-color: var(--card);
+  background-color: var(--black);
   /* background-image: linear-gradient(to right, 	var(--darkBlue), var(--lightBlue)); */
-  color: var(--lightBlue);
+  color: var(--nav-bg);
   text-transform: capitalize;
 }
 
-main {
+body {
   /* background-color: rgb(235, 234, 234); */
-  background-color: #1f293a;
+  background-color: var(--nav-bg);
 }
 
 .categories-container {
   padding:  2rem 1rem;
   max-width: 992px;
   margin: 0 auto;
-}
-
-.category__header {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #0066ff;
 }
 
 @media screen and (min-width: 1100px) {
@@ -58,21 +52,29 @@ main {
 
 .category__heading {
   padding: 2rem !important;
-  background-color: #334057;
-  color: var(--lightBlue);
+  background-color: var(--card-bg);
+  color: var(--black);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.category-icon {
+  width: 40px;
+  margin-right: 1rem;
 }
 
 .category__description {
   margin-bottom: 2rem;
   color: var(--text);
+  font-weight: 400;
 }
 
 .category--padding {
   padding: 0 2rem 2.5rem 2rem;
   color: var(--veryLightBlue);
-  background-color: #334057;
+  background-color: var(--card-bg);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -80,10 +82,10 @@ main {
 .category__btn {
   padding: 0.8rem 2rem;
   font-size: 1.4rem;
-  background-color: var(--lightBlue);
+  background-color: var(--red-1);
   font-weight: 500;
-  color: var(--veryDarkBlue);
-  border: 1px solid var(--lightBlue);
+  color: var(--nav-bg);
+  border: 1px solid var(--red-1);
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -104,8 +106,7 @@ main {
 }
 
 .category__btn:hover {
-  color: var(--lightBlue);
-  background-color: var(--veryDarkBlue);
+  background-color: var(--red-2);
 
 }
 
@@ -120,13 +121,14 @@ main {
 
 .number-of-threads {
   margin-top: 2rem;
-  color: var(--lightBlue);
+  font-weight: 500;
+  color: var(--red-2);
   display: flex;
   margin-left: 0.5rem;
   align-items: center;
 }
 
-.number-of-threads img {
+.number-of-threads svg {
   margin-left: 0.5rem;
 }
 

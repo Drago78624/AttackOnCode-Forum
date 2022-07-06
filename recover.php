@@ -64,7 +64,7 @@ if (isset($_POST['recover'])) {
                         $mail->isHTML(true);                                  //Set email format to HTML
                         $mail->Subject = 'Password Reset';
                         $mail->Body = "Hi $username, Click on the link below to reset password of your AttackOnCode account
-//                               http://localhost/AttackOnCode/reset-password.php?token=$token";
+//                               http://localhost/AttackOnCode-Forum/reset-password.php?token=$token";
                         $mail->send();
                         // echo 'Message has been sent';
                         // session_start();

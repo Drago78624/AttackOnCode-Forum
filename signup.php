@@ -96,7 +96,7 @@ if (isset($_POST['signup'])) {
                         $mail->isHTML(true);                                  //Set email format to HTML
                         $mail->Subject = 'Email Verification';
                         $mail->Body = "Hi $fullName, Click on the link below to activate you AttackOnCode account
-//                               http://localhost/AttackOnCode/email-verification.php?token=$token";
+//                               http://localhost/AttackOnCode-Forum/email-verification.php?token=$token";
                         $mail->send();
                         // echo 'Message has been sent';
                         session_start();
@@ -163,7 +163,7 @@ if (isset($_POST['signup'])) {
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgCPassword) ?></span>
                     <input type="submit" name="signup" value="Sign up">
                 </form>
-                <p class="form-text"><a href="login.php">Already have an account ? </a></p>
+                <p class="form-text" style="font-weight: bold;"><a href="login.php">Already have an account ? </a></p>
             </div>
         </div>
     </main>

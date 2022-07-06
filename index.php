@@ -32,13 +32,13 @@
         <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
     </div>
     <?php endif; ?>
-    <!-- <div class="hero-section">
+     <!-- <div class="hero-section">
         <div class="hero-content">
             <h1 class="hero-heading">AttackOnCode</h1>
             <p class="hero-description">A place for attacking each other with coding questions</p>
             <a href="#categories" class="hero-btn"><span class="hero-btn-text">Explore categories</span> </a>
         </div>
-    </div> -->
+    </div>  -->
     <main id="categories">
         <div class="categories-container">
             <?php foreach($categoriesFetchingArray as $categories => $category): ?>
@@ -52,14 +52,17 @@
                     $threadCount = mysqli_fetch_array($countingThreadsResult);
             ?>
             <div class="category">
-                <h2 class="category__heading"><?php echo htmlspecialchars($category['category_name']) ?> Forum</h2>
+                <h2 class="category__heading">
+                <img src="<?php echo $category['icon_url']?>" alt="" class="category-icon">    
+                <?php echo htmlspecialchars($category['category_name']) ?> Forum</h2>
                 <div class="category--padding">
-                    <p class="category__description"><?php echo htmlspecialchars($category['category_description']) ?></p>
+                    <p class="category__description text"><?php echo htmlspecialchars($category['category_description']) ?></p>
                     <div class="btn-info-container">
                     <a class="category__btn" href="thread-list.php?category_id=<?php echo htmlspecialchars($category['category_id']) ?>">Explore</a>
                     <div class="number-of-threads">
                     <span><?php echo htmlspecialchars($threadCount[0]) ?> threads</span>
-                        <img src="assets/icons8-chat-24.png" alt="">
+                        <!-- <img src="assets/icons8-chat-24.png" alt=""> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#c82471" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                     </div>
                     </div>
                 </div>

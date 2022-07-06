@@ -45,7 +45,7 @@ try {
     $mail->isHTML(true);                                  //Set email format to HTML
     $mail->Subject = 'Email Verification';
     $mail->Body = "Hi $fullName, Click on the link below to activate you AttackOnCode account
-//                               http://localhost/AttackOnCode/email-verification.php?token=$token";
+//                               http://localhost/AttackOnCode-Forum/email-verification.php?token=$token";
     $mail->send();
     // echo 'Message has been sent';
     session_start();
@@ -55,5 +55,3 @@ try {
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
-
-?>

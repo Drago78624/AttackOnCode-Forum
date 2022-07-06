@@ -6,5 +6,3 @@
     $database = 'attack_on_code';
 
     $mysqli = new mysqli($serverName, $userName, $password, $database);
-
-?>

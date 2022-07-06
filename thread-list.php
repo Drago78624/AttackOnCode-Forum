@@ -80,9 +80,12 @@
     <main class="thread-list-section">
         <div class="category-container">
             <div class="category">
-                    <h2 class="category__heading"><?php echo htmlspecialchars($categoryFetchingArray['category_name']) ?> Forum</h2>
+                    <h2 class="category__heading">
+                    <img src="<?php echo $categoryFetchingArray['icon_url']?>" alt="" class="category-icon"> 
+                        <?php echo htmlspecialchars
+                    ($categoryFetchingArray['category_name']) ?> Forum</h2>
                     <div class="category--padding">
-                            <p class="category__description"><?php echo htmlspecialchars($categoryFetchingArray['category_description']) ?></p>
+                            <p class="category__description text"><?php echo htmlspecialchars($categoryFetchingArray['category_description']) ?></p>
                             <a class="category__btn" href="#threadlist">Read Threads</a>
                     </div>
             </div>
@@ -125,14 +128,14 @@
                 <a class="thread" href="thread.php?thread_id=<?php echo htmlspecialchars($thread['thread_id']) ?>">
                     <h3 class="thread-heading"><?php echo htmlspecialchars($thread['thread_title']) ?></h3>
                     <div class="btn-info-container">
-                        <p class="thread-desc"><?php echo substr(htmlspecialchars($thread['thread_desc']), 0, 250) ?>......</p>
+                        <p class="thread-desc text"><?php echo substr(htmlspecialchars($thread['thread_desc']), 0, 250) ?>......</p>
                         <!-- <div class="likes">
                             <span>3 likes</span>
                             <button><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button>
                         </div> -->
                         <div class="number-of-threads">
                             <span><?php echo htmlspecialchars($commentCount[0]); ?> comments</span>
-                            <img src="assets/icons8-chat-24.png" alt="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#af2164" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                         </div>
                     </div>
                 </a>
