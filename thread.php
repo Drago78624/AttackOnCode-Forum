@@ -99,7 +99,7 @@
                     <h3 class="thread-heading"><?php echo htmlspecialchars($threadFetchingArray['thread_title']) ?></h3>
                     <p class="thread-desc"><?php echo htmlspecialchars($threadFetchingArray['thread_desc']) ?></p>
                     <?php if($threadFetchingArray['thread_code'] != ""): ?>
-                    <pre style="margin-bottom: 1rem;font-size: 1.2rem"><code><?php echo htmlspecialchars($threadFetchingArray['thread_code']) ?></code></pre>
+                    <pre style="margin-bottom: 1rem;font-size: 1.2rem"><code><?php echo nl2br(htmlspecialchars($threadFetchingArray['thread_code'])) ?></code></pre>
                     <?php endif; ?>
                     <p><strong class="username-heading">Posted By : </strong> <span class="username"><?php echo htmlspecialchars($usernameFetchingArray['user_name']) ?></span></p>
                 </div>
