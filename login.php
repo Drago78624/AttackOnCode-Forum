@@ -71,7 +71,7 @@
                 }
 
             }else {
-                $errMsgEmail = "Bad email or password";
+                $errMsgPassword = "Bad email or password";
             }
         }
     }

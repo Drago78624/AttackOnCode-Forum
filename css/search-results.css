@@ -1,12 +1,15 @@
 main {
   background-color: var(--bg);
-  height: 80vh;
 }
 #threadlist, #nothing {
     padding:  2rem 1rem;
     max-width: 992px;
     margin: 0 auto;
   }
+
+  body {
+    background-color: var(--bg);
+}
 
 .search-results-heading {
     text-align: center;

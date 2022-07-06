@@ -6,11 +6,15 @@ const searchIcon = document.querySelector(".navbar__search-icon");
 const heroBtn = document.querySelector(".hero-btn");
 const closeIcon = document.querySelector(".close-icon");
 const alertBox = document.querySelector(".alert-box");
+const like = document.querySelector(".like");
+const dislike = document.querySelector(".dislike");
 
 hamburger.addEventListener("click", () => {
   navbar.classList.toggle("side-menu-active");
   hamburger.classList.toggle("showmenu");
 });
+
+
 
 searchIcon.addEventListener("click", ()=>{
   navbarForm.submit()

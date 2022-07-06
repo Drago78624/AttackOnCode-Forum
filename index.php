@@ -27,18 +27,18 @@
 
 <body>
     <?php include "./partials/_navbar.php"; ?>
-    <?php if(isset($_SESSION['loggedin'])): ?>
+    <!-- <?php if(isset($_SESSION['loggedin'])): ?>
     <div class="username-banner">
         <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
     </div>
     <?php endif; ?>
-    <!-- <div class="hero-section">
+     <div class="hero-section">
         <div class="hero-content">
             <h1 class="hero-heading">AttackOnCode</h1>
             <p class="hero-description">A place for attacking each other with coding questions</p>
             <a href="#categories" class="hero-btn"><span class="hero-btn-text">Explore categories</span> </a>
         </div>
-    </div> -->
+    </div> 
     <main id="categories">
         <div class="categories-container">
             <?php foreach($categoriesFetchingArray as $categories => $category): ?>
@@ -68,7 +68,7 @@
         </div>
     </main>
 
-    <?php include "./partials/_footer.php" ?>
+    <?php include "./partials/_footer.php" ?> -->
     <script src="./script/app.js"></script>
 </body>
 

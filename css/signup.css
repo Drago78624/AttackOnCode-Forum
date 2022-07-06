@@ -1,11 +1,14 @@
 .signup-section {
-    padding: 1rem;
-    height: 80vh;
+    padding: 5rem 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--bg);
 
+}
+
+body {
+    background-color: var(--bg);
 }
 .signup-container {
     max-width: 500px;

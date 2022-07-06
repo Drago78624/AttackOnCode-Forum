@@ -1,11 +1,12 @@
+body {
+    background-color: var(--bg);
+}
+
 .contact-section {
-    padding: 1rem;
-    height: 79vh;
+    padding: 5rem 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg);
-
 }
 .contact-container {
     max-width: 500px;

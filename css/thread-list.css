@@ -7,6 +7,10 @@ main {
     max-width: 992px;
     margin: 0 auto;
   }
+
+  body {
+    background-color: var(--bg);
+}
   
   .category__header {
     text-align: center;

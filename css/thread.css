@@ -8,6 +8,9 @@ main {
     margin: 0 auto;
   }
 
+  body {
+    background-color: var(--bg);
+}
 
 .thread {
     display: block;
@@ -159,7 +162,6 @@ main {
     -moz-transition: transform 200ms;
     -ms-transition: transform 200ms;
     -o-transition: transform 200ms;
-    cursor: pointer;
     box-shadow: var(--bsh);
 }
 
@@ -170,4 +172,19 @@ main {
 
 .comment-desc {
     color: var(--text);
+}
+
+.vote-btns-container {
+    display: flex;
+    align-items: center;
+    color: var(--lightBlue);
+}
+
+.like, .dislike {
+    background-color: transparent;
+    color: white;
+    border: 0;
+    outline: 0;
+    margin: 0 0.5rem;
+    cursor: pointer;
 }

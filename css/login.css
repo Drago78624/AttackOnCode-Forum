@@ -4,10 +4,11 @@
     text-underline-offset: 1px;
     cursor: pointer;
 }
-
+body {
+    background-color: var(--bg);
+}
 .login-section {
-    padding: 1rem;
-    height: 79vh;
+    padding: 5rem 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
