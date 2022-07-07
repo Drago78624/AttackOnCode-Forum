@@ -1,5 +1,6 @@
 body {
-    background-color: var(--bg);
+    background-image: linear-gradient(to bottom, #DA4453, #89216B);
+
 }
 
 .contact-section {
@@ -12,7 +13,7 @@ body {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
-    background-color: var(--card);
+    background-color: var(--card-bg);
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -22,7 +23,7 @@ body {
 }
 
 .contact-heading {
-    color: var(--lightBlue);
+    color: var(--red-1);
     text-align: center;
     background-color: transparent;;
     padding: 1rem;
@@ -52,8 +53,13 @@ body {
     border-bottom: 1px solid lightgray;
 }
 
+.contact-form textarea {
+    resize: none;
+}
+
+
 .contact-form input::placeholder, .contact-form textarea::placeholder { 
-    color: #708ab9;
+    color: var(--placeholder);
   }
 
 .err-msg {
@@ -61,13 +67,13 @@ body {
     margin-bottom: 2rem;
     margin-top: 0.5rem;
     padding-left: 1rem;
-    color: #ff5d6d;
+    color: var(--red-2);
 }
 
 .contact-form input[type="submit"] {
-    background-color: var(--lightBlue);
-    color: var(--veryDarkBlue);
-    border: 1px solid var(--lightBlue);
+    background-color: var(--red-1);
+    color: var(--nav-bg);
+    border: 1px solid var(--red-1);
     font-weight: 500;
     transition: background-color 200ms;
     -webkit-transition: background-color 200ms;
@@ -78,10 +84,9 @@ body {
 }
 
 .contact-form input[type="submit"]:hover {
-    background-color: var(--bg);
-    color: var(--lightBlue);
+    background-color: var(--red-2);
 }
 
 .contact-form input:active, input:focus {
-    border-bottom-color: var(--lightBlue);
+    border-bottom-color: var(--red-2);
 }

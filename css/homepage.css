@@ -11,7 +11,7 @@
 
 body {
   /* background-color: rgb(235, 234, 234); */
-  background-color: var(--nav-bg);
+  background-image: linear-gradient(to bottom, #DA4453, #89216B);
 }
 
 .categories-container {

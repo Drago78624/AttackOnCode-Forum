@@ -2,8 +2,27 @@
     session_start();
     require "./partials/_connection.php";
 
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+
+    //Load Composer's autoloader
+    require 'vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+    $mail = new PHPMailer(true);
+
     $errMsgName = $errMsgEmail = $errMsgMessage = $errMsgSubject = $fullName = $email = $subject = $message = "";
-    $user_id = $_SESSION['user_id'];
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+        $stmt = $mysqli->prepare("SELECT * FROM `users` WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $userResult = $stmt->get_result();
+        $row = mysqli_fetch_assoc($userResult);
+        $userName = $row['user_name'];
+        $userEmail= $row['user_email'];
+    }
     $showAlert = false;
 
     if(isset($_POST['contact'])){
@@ -19,12 +38,12 @@
         }else {
             $fullName = test_input($_POST['fullname']);
         }
-        if(empty($_POST['email'])){
+        if (empty($_POST['email'])) {
             $errMsgEmail = "Please enter an email";
-        }else {
-            if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+        } else {
+            if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $errMsgEmail = "Please enter a valid email";
-            }else {
+            } else {
                 $email = test_input($_POST['email']);
             }
         }
@@ -39,25 +58,33 @@
             $message = test_input($_POST['message']);
         }
 
-        if($fullName && $email && $message){
-                // $sendingMessageSql = "";
-                // $sendingMessageResult = mysqli_query($conn, $sendingMessageSql);
-                // $num = mysqli_num_rows($sendingMessageResult);
-                // if($num){
-                //     $errMsgEmail = "User already exists";
-                // }else {
-                //     $signupSql = "INSERT INTO `users` (`user_name`, `user_email`, `user_password`) VALUES ('$fullName', '$email', '$hash');";
-                //     $signupResult = mysqli_query($conn, $signupSql);
-                //     if($signupResult){
-                //         $showAlert = true;
-                //         $errMsgName = $errMsgEmail = $errMsgCPassword = $errMsgPassword = $fullName = $email = $password = $cpassword = "";
-                //     }
-                // }
-                $to = "maazahmed78624@gmail.com";
-                $msg = $message;
-                $subj = $subject;
-                mail($to,$subj,$msg);
+        if($fullName && $subject && $email && $message){
+            try {
+                $mail->isSMTP();
+                $mail->Host = $_ENV['SMTP_SERVER'];
+                $mail->SMTPAuth = true;
+                $mail->Username = $_ENV['USERNAME'];
+                $mail->Password = $_ENV['PASSWORD'];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 25;
+                $mail->setFrom($_ENV['USERNAME'], 'AttackOnCode');
+                $mail->addAddress('maazahmed78624@gmail.com', 'Joe User');
+                $mail->isHTML(true);                                  //Set email format to HTML
+                $mail->Subject = $subject;
+                $mail->Body = <<<body
+                    <p><strong>From: </strong>$email</p>
+                    <p><strong>Name: </strong>$fullName</p>
+                    <p>$message</p>
+                body;
+                $mail->send();
+                // echo 'Message has been sent';
+                session_start();
+                $_SESSION['mail_msg'] = "Your Concern has been sent to the admin successfully";
+            
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
+        }
 
         
     }
@@ -80,13 +107,27 @@
             <h1 class="contact-heading">Contact</h1>
             <div class="contact">
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST"  class="contact-form">
-                    <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($fullName);?>" placeholder="Full Name">
+                    <input type="text" name="fullname" id="fullname" placeholder="Full Name"
+                        <?php if(isset($_SESSION['user_id'])): ?>
+                            value=<?php echo $userName?>
+                            readonly
+                        <?php else: ?>
+                            value="<?php echo htmlspecialchars($fullName);?>"
+                        <?php endif ?>
+                    >
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgName) ?></span>
-                    <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email);?>" placeholder="Email">
+                    <input type="email" name="email" id="email" placeholder="Email"
+                        <?php if(isset($_SESSION['user_id'])): ?>
+                            value=<?php echo $userEmail?>
+                            readonly
+                        <?php else: ?>
+                            value="<?php echo htmlspecialchars($email);?>"
+                        <?php endif ?>
+                    >
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgEmail) ?></span>
                     <input type="text" name="subject" id="subject" value="<?php echo htmlspecialchars($subject);?>" placeholder="Subject">
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgSubject) ?></span>
-                    <textarea name="message" id="message" cols="30" rows="10" placeholder="Type your message...."></textarea>
+                    <textarea name="message" id="message" cols="30" rows="7" placeholder="Type your message...."></textarea>
                     <span class="err-msg"><?php echo htmlspecialchars($errMsgMessage) ?></span>
                     <input type="submit" name="contact" value="Send">
                 </form>

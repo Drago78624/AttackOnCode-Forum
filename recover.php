@@ -96,7 +96,7 @@ if (isset($_POST['recover'])) {
     <link rel="stylesheet" href="./css/navbar.css">
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/recover.css">
-    <title>AttackOnCode - recover</title>
+    <title>AttackOnCode - Recover</title>
 </head>
 
 <body>

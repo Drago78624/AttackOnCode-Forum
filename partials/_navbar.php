@@ -2,7 +2,7 @@
     <nav class="navbar">
         <div class="navbar__brand">
         
-            <a href="index.php" class="brand"><img src="assets/code (2).png" alt="">  <span class="brand-text">AttackOnCode</span> </a>
+            <a href="index.php" class="brand"><img src="assets/logo.png" alt="">  <span class="brand-text">AttackOnCode</span> </a>
         </div>
         <div class="navbar__dropdown-items">
             <form class="navbar__form" action="search-results.php" method="GET">
@@ -21,11 +21,11 @@
             <ul class="navbar__links">
                 <li class="navbar__links--link"><a href="index.php"> Home </a></li>
                 <li class="navbar__links--link"><a href="about.php"> About</a></li>
+                <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
                 <?php if(!isset($_SESSION['loggedin'])): ?>
                     <li class="navbar__links--link loginBtn"><a href="login.php"> Login</a></li>
                     <li class="navbar__links--link signupBtn"> <a href="signup.php"> Signup</a></li>
                 <?php else: ?>
-                    <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
                     <li class="navbar__links--link signupBtn"> <a href="logout.php"> Logout</a></li>
                 <?php endif; ?>
             </ul>
