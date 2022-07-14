@@ -23,10 +23,13 @@
                 <li class="navbar__links--link"><a href="about.php"> About</a></li>
                 <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
                 <?php if(!isset($_SESSION['loggedin'])): ?>
-                    <li class="navbar__links--link loginBtn"><a href="login.php"> Login</a></li>
-                    <li class="navbar__links--link signupBtn"> <a href="signup.php"> Signup</a></li>
+                    <a class="navbar__links--link loginBtn" href="login.php">Login</a>
+                    <!-- <li class="navbar__links--link loginBtn"><a href="login.php"> Login</a></li> -->
+                    <!-- <li class="navbar__links--link signupBtn"> <a href="signup.php"> Signup</a></li> -->
+                    <a class="navbar__links--link signupBtn" href="signup.php">Signup</a>
                 <?php else: ?>
-                    <li class="navbar__links--link signupBtn"> <a href="logout.php"> Logout</a></li>
+                    <a class="navbar__links--link signupBtn" href="logout.php">Logout</a>
+                    <!-- <li class="navbar__links--link signupBtn"> <a href="logout.php"> Logout</a></li> -->
                 <?php endif; ?>
             </ul>
         </div>

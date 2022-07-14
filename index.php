@@ -55,6 +55,7 @@
             <div class="category">
                 <h2 class="category__heading">
                 <img src="<?php echo $category['icon_url']?>" alt="" class="category-icon">    
+                <!-- <img src="assets/react.png" class="category-icon" alt=""> -->
                 <?php echo htmlspecialchars($category['category_name']) ?> Forum</h2>
                 <div class="category--padding">
                     <p class="category__description text"><?php echo htmlspecialchars($category['category_description']) ?></p>

@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: var(--bg);
+  background-image: linear-gradient(to bottom, #DA4453, #89216B);
 }
 
 .thread {
@@ -21,7 +21,6 @@ body {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   margin-bottom: 2rem;
-  cursor: pointer;
   box-shadow: var(--bs);
 }
 
@@ -58,6 +57,16 @@ body {
   }
 }
 
+.add-comment-container {
+  background-color: var(--nav-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
 .comment-description,
 .comment-code {
   width: 100%;
@@ -73,6 +82,7 @@ body {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
+  resize: none;
 }
 
 .comment-description::placeholder,
@@ -138,7 +148,7 @@ body {
 .commentlist-heading {
   text-align: center;
   margin-bottom: 1rem;
-  color: var(--black);
+  color: var(--card-bg);
 }
 
 @media screen and (min-width: 1100px) {
@@ -172,6 +182,7 @@ body {
 
 .comment-desc {
   color: var(--text);
+  font-family: 'Montserrat', sans-serif;
 }
 
 .vote-btns-container {

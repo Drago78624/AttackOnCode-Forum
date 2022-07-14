@@ -22,7 +22,8 @@
   --lightBlue: #40a3e6;
   --veryLightBlue: #DFF6FF;
   --bg: #eeeeee;
-  --card-bg: #f5f5f5;
+  /* --card-bg: #f5f5f5; */
+  --card-bg: #f3eded;
   /* --text: #bfd6ff; */
   --text: #505050;
   --validation: #af2164;

@@ -1,6 +1,3 @@
-main {
-  background-color: var(--bg);
-}
 #threadlist, #nothing {
     padding:  2rem 1rem;
     max-width: 992px;
@@ -8,13 +5,13 @@ main {
   }
 
   body {
-    background-color: var(--bg);
+    background-image: linear-gradient(to bottom, #DA4453, #89216B);
 }
 
 .search-results-heading {
     text-align: center;
     margin-bottom: 1rem;
-    color: var(--lightBlue);
+    color: var(--nav-bg);
 }
 
 @media screen and (min-width: 1100px) {
@@ -26,8 +23,8 @@ main {
 .nothing-box {
     padding: 2rem;
     font-size: 2rem;
-    background-color: var(--card);
-    color: var(--text);
+    background-color: var(--card-bg);
+    color: var(--red-2);
     font-weight: 500;
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -44,7 +41,7 @@ main {
 
 .thread {
     display: block;
-    background-color: var(--card);
+    background-color: var(--card-bg);
     padding: 1rem;
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -72,7 +69,7 @@ main {
 
 .thread-heading {
     margin-bottom: 1rem;
-    color: var(--lightBlue);
+    color: var(--red-1);
 }
 
 .thread-desc {

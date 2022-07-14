@@ -40,8 +40,8 @@
             $comment_code =$mysqli->real_escape_string($_POST['comment_code']);
     
             // $commentAddingSql = "INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES ('$comment_description', '$comment_code', '$thread_id', '$user_idC');";
-            $stmt =  $mysqli->prepare("INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES (?, ?, ?, ?);");
-            $stmt->bind_param("ssii", $comment_description,$comment_code,$thread_id,$user_idC);
+            $stmt =  $mysqli->prepare("INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES (?, '$comment_code', ?, ?);");
+            $stmt->bind_param("sii", $comment_description,$thread_id,$user_idC);
             $stmt->execute();
             $commentAddingResult = $stmt->get_result();
 
@@ -113,8 +113,8 @@
         </section>
         <?php if(isset($_SESSION['loggedin'])): ?>
         <section class="add-comment">
-            <h2 class="add-comment-heading">Add a Comment</h2>
             <div class="add-comment-container">
+                <h2 class="add-comment-heading">Add a Comment</h2>
                 <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST"
                     class="add-comment-form">
                     <textarea name="comment_description" placeholder="Add a Comment ........."
@@ -134,10 +134,10 @@
             </div>
         </section>
         <?php endif; ?>
+        <h2 class="commentlist-heading">Browse Comments</h2>
+        <?php if($commentsFetchingArray): ?>
         <section id="commentlist">
-            <h2 class="commentlist-heading">Browse Comments</h2>
             <div class="commentlist-container">
-                <?php if($commentsFetchingArray): ?>
                 <?php foreach($commentsFetchingArray as $comments => $comment): ?>
                 <?php 
                     $cuser_id = $comment['user_id'];
@@ -152,29 +152,21 @@
                     <h3 class="comment-heading"><?php echo htmlspecialchars($cusernameFetchingArray['user_name']) ?>
                     </h3>
                     <p class="comment-desc"><?php echo htmlspecialchars($comment['comment_content']) ?></p>
-                    <?php if($comment['comment_code'] != ""): ?>.
+                    <?php if($comment['comment_code'] != ""): ?>
                     <pre
                         style="margin: 1rem 0;font-size: 1.2rem"><code><?php echo htmlspecialchars($comment['comment_code']) ?></code></pre>
                     <?php endif; ?>
-                    <form class="vote-btns-container" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST">
-                        <span class="like-count">9</span>
-                        <button class="like" type="submit" name="like" >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></button>
-                            <span class="dislike-count">9</span>    
-                        <button class="dislike" type="submit" name="dislike" >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg></button>
-                    </form>
                 </div>
                 <?php endforeach; ?>
-                <?php else: ?>
-                <section id="nothing">
-                    <div class="nothing-box">
-                        <p>No comments are available for this thread</p>
-                    </div>
-                </section>
-                <?php endif;?>
             </div>
         </section>
+        <?php else: ?>
+        <section id="nothing">
+            <div class="nothing-box">
+                <p>No comments are available for this thread</p>
+            </div>
+        </section>
+        <?php endif;?>
     </main>
     <?php include "./partials/_footer.php" ?>
 

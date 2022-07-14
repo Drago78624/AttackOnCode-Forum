@@ -26,8 +26,8 @@
         $thread_code = $mysqli->real_escape_string($_POST['thread_code']);
         if(!empty($_POST['thread_title']) && !empty($_POST['thread_description'])){
             // $threadPostingSql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES ('$thread_title', '$thread_description', '$thread_code', '$category_id', '$user_id')";
-            $stmt =  $mysqli->prepare("INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssii", $thread_title, $thread_description, $thread_code,$category_id,$user_id);
+            $stmt =  $mysqli->prepare("INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES (?, ?, '$thread_code', ?, ?)");
+            $stmt->bind_param("ssii", $thread_title, $thread_description, $category_id,$user_id);
             $stmt->execute();
             $threadPostingResult = $stmt->get_result();
     
@@ -92,8 +92,8 @@
         </div>
         <?php if(isset($_SESSION['loggedin'])): ?>
         <section class="post-thread">
-            <h2 class="post-thread-heading">Post a Thread</h2>
             <div class="post-thread-container">
+                <h2 class="post-thread-heading">Post a Thread</h2>
                 <form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="post-thread-form">
                     <input type="text" name="thread_title" placeholder="Thread Title" class="thread-title" value="<?php echo htmlspecialchars($thread_title)?>">
                     <span class="mb-2"><?php echo htmlspecialchars($errorMsgTitle) ?></span>
@@ -111,10 +111,10 @@
             </div>
         </section>
         <?php endif; ?>
+        <h2 class="threadlist-heading">Browse Threads</h2>
+        <?php if($threadsFetchingArray): ?>
         <section id="threadlist">
-            <h2 class="threadlist-heading">Browse Threads</h2>
             <div class="threadlist-container">
-                <?php if($threadsFetchingArray): ?>
                 <?php foreach($threadsFetchingArray as $threads => $thread): ?>
                 <?php
                     $thread_id = $thread['thread_id'];
@@ -140,15 +140,15 @@
                     </div>
                 </a>
                 <?php endforeach; ?>
-                <?php else: ?>
-                    <section id="nothing">
-                        <div class="nothing-box">
-                            <p>No threads are available in this category</p>
-                        </div>
-                   </section>
-                <?php endif;?>
             </div>
         </section>
+        <?php else: ?>
+            <section id="nothing">
+                <div class="nothing-box">
+                    <p>No threads are available in this category</p>
+                </div>
+           </section>
+        <?php endif;?>
     </main>
     <?php include "./partials/_footer.php" ?>
 
