@@ -63,7 +63,7 @@ if (isset($_POST['signup'])) {
             if ($num) {
                 $errMsgEmail = "User already exists";
             } else {
-                $stmt = $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`, `status`) VALUES (?, ?, ?, 'inactive');");
+                $stmt = $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`, `status`, `user_type`) VALUES (?, ?, ?, 'inactive', 'user');");
                 $stmt->bind_param("sss", $fullName, $email, $hash);
                 $stmt->execute();
                 $signupResult = $stmt->get_result();
@@ -96,7 +96,7 @@ if (isset($_POST['signup'])) {
                         $mail->isHTML(true);                                  //Set email format to HTML
                         $mail->Subject = 'Email Verification';
                         $mail->Body = "Hi $fullName, Click on the link below to activate you AttackOnCode account
-//                               http://localhost/AttackOnCode-Forum/email-verification.php?token=$token";
+                               http://localhost/AttackOnCode-Forum/email-verification.php?token=$token";
                         $mail->send();
                         // echo 'Message has been sent';
                         session_start();

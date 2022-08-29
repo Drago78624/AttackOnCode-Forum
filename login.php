@@ -53,6 +53,9 @@
                         $_SESSION['loggedin'] = true;
                         $_SESSION['username'] = $row['user_name'];
                         $_SESSION['user_id'] = $row['user_id'];
+                        if($row['user_type'] == "admin"){
+                            $_SESSION['admin_active'] = true;
+                        }
                         header("Location: index.php");
                     }else {
                         $errMsgPassword = "Bad email or password";

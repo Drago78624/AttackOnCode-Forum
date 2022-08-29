@@ -19,6 +19,9 @@
                 </div>
             </form>
             <ul class="navbar__links">
+                <?php if(isset($_SESSION['admin_active'])): ?>
+                    <li class="navbar__links--link"><a href="dashboard.php"> Dashboard </a></li>
+                <?php endif; ?>
                 <li class="navbar__links--link"><a href="index.php"> Home </a></li>
                 <li class="navbar__links--link"><a href="about.php"> About</a></li>
                 <li class="navbar__links--link"><a href="contact.php"> Contact</a></li>
