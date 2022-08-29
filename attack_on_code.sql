@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2022 at 05:21 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.2
+-- Generation Time: Aug 29, 2022 at 04:27 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,6 +31,7 @@ CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(255) NOT NULL,
   `category_description` text NOT NULL,
+  `icon_url` varchar(255) NOT NULL,
   `category_createdat` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -38,13 +39,13 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`category_id`, `category_name`, `category_description`, `category_createdat`) VALUES
-(1, 'React', 'React is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta and a community of individual developers and companies.', '2022-06-17 06:55:23'),
-(2, 'PHP', 'PHP is a general-purpose scripting language geared toward web development. It was originally created by Danish-Canadian programmer Rasmus Lerdorf in 1994. The PHP reference implementation is now produced by The PHP Group. ', '2022-06-17 06:55:23'),
-(3, 'JavaScript', 'JavaScript, often abbreviated JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. Over 97% of websites use JavaScript on the client side for web page behavior, often incorporating third-party libraries.', '2022-06-17 06:57:33'),
-(4, 'Bootstrap', 'Bootstrap is a free and open-source CSS framework directed at responsive, mobile-first front-end web development. It contains HTML, CSS and JavaScript-based design templates for typography, forms, buttons, navigation, and other interface components.', '2022-06-17 06:57:33'),
-(5, 'Angular', 'Angular is a TypeScript-based free and open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.', '2022-06-17 07:03:51'),
-(6, 'TypeScript', 'TypeScript is a programming language developed and maintained by Microsoft. It is a strict syntactical superset of JavaScript and adds optional static typing to the language. It is designed for the development of large applications and transpiles to JavaScript.', '2022-06-17 07:03:51');
+INSERT INTO `categories` (`category_id`, `category_name`, `category_description`, `icon_url`, `category_createdat`) VALUES
+(1, 'React', 'React is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta and a community of individual developers and companies.', 'assets/react.png', '2022-06-17 06:55:23'),
+(2, 'PHP', 'PHP is a general-purpose scripting language geared toward web development. It was originally created by Danish-Canadian programmer Rasmus Lerdorf in 1994. The PHP reference implementation is now produced by The PHP Group. ', 'assets/php.png', '2022-06-17 06:55:23'),
+(3, 'JavaScript', 'JavaScript, often abbreviated JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. Over 97% of websites use JavaScript on the client side for web page behavior, often incorporating third-party libraries.', 'assets/javascript.png', '2022-06-17 06:57:33'),
+(4, 'Bootstrap', 'Bootstrap is a free and open-source CSS framework directed at responsive, mobile-first front-end web development. It contains HTML, CSS and JavaScript-based design templates for typography, forms, buttons, navigation, and other interface components.', 'assets/bootstrap.png', '2022-06-17 06:57:33'),
+(5, 'Angular', 'Angular is a TypeScript-based free and open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. Angular is a complete rewrite from the same team that built AngularJS.', 'assets/angular.png', '2022-06-17 07:03:51'),
+(6, 'TypeScript', 'TypeScript is a programming language developed and maintained by Microsoft. It is a strict syntactical superset of JavaScript and adds optional static typing to the language. It is designed for the development of large applications and transpiles to JavaScript.', 'assets/typescript.png', '2022-06-17 07:03:51');
 
 -- --------------------------------------------------------
 
