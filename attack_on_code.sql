@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2022 at 04:27 PM
+-- Generation Time: Aug 29, 2022 at 05:05 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -78,6 +78,13 @@ CREATE TABLE `threads` (
   `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `threads`
+--
+
+INSERT INTO `threads` (`thread_id`, `thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES
+(1, 'Why is processing a sorted array faster than processing an unsorted array?', 'adfdfadfd', '<?php\r\n$servername = \"localhost\";\r\n$username = \"username\";\r\n$password = \"password\";\r\n$dbname = \"myDB\";\r\n\r\n// Create connection\r\n$conn = new mysqli($servername, $username, $password, $dbname);\r\n// Check connection\r\nif ($conn->connect_error) {\r\n  die(\"Connection failed: \" . $conn->connect_error);\r\n}\r\n\r\n$sql = \"SELECT id, firstname, lastname FROM MyGuests ORDER BY lastname\";\r\n$result = $conn->query($sql);\r\n\r\nif ($result->num_rows > 0) {\r\n  // output data of each row\r\n  while($row = $result->fetch_assoc()) {\r\n    echo \"id: \" . $row[\"id\"]. \" - Name: \" . $row[\"firstname\"]. \" \" . $row[\"lastname\"]. \"<br>\";\r\n  }\r\n} else {\r\n  echo \"0 results\";\r\n}\r\n$conn->close();\r\n?>', 1, 1, '2022-08-29 19:36:02');
+
 -- --------------------------------------------------------
 
 --
@@ -105,8 +112,17 @@ CREATE TABLE `users` (
   `user_email` varchar(50) NOT NULL,
   `user_password` text NOT NULL,
   `status` varchar(255) NOT NULL,
+  `user_type` varchar(255) NOT NULL,
   `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `user_name`, `user_email`, `user_password`, `status`, `user_type`, `timestamp`) VALUES
+(1, 'admin', 'admin@admin.com', '$2a$12$0nyw4NQgYr1BpsG8hsngr.xJmeu3baxZnX3I7cyToUsJlIwBMHg3i', 'active', 'admin', '2022-08-29 19:57:19'),
+(2, 'Kashif Jhangra', 'vasiwo3999@otodir.com', '$2y$10$UsOAq5aqJVS3WyC/yhqWROVIPwj6cBNOpoByAqs/ZZfC.is/y4ePG', 'active', 'user', '2022-08-29 20:01:51');
 
 --
 -- Indexes for dumped tables
@@ -163,19 +179,19 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `threads`
 --
 ALTER TABLE `threads`
-  MODIFY `thread_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `thread_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `token_service`
 --
 ALTER TABLE `token_service`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
