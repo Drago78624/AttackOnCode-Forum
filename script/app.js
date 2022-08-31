@@ -25,16 +25,21 @@ searchIcon.addEventListener("click", ()=>{
 //   alertBox.remove()
 // }, 3000);
 
-closeIcon.addEventListener("click", ()=>{
-  alertBox.remove();
-})
+if(closeIcon){
+  closeIcon.addEventListener("click", ()=>{
+    alertBox.remove();
+  })
+}
 
+if(heroBtn){
 
-heroBtn.addEventListener("mouseover", (e) => {
+  
+  heroBtn.addEventListener("mouseover", (e) => {
   const x = e.pageX - heroBtn.offsetLeft;
   const y = e.pageY - heroBtn.offsetTop;
   console.log(x, y);
-
+  
   heroBtn.style.setProperty("--posX", x + "px");
   heroBtn.style.setProperty("--posY", y + "px");
 });
+}
