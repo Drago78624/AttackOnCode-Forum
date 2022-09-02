@@ -6,11 +6,96 @@
     if(!isset($_SESSION['admin_active'])){
         header("Location: index.php");
     }
+
+    $catId = $catName = $catDesc = $catIconUrl = $errMsgCatName = $errMsgCatDesc = $errMsgCatIconUrl = "";
+
+    if(isset($_POST['updateCategory'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['catName'])) {
+            $errMsgCatName = "Please enter category name";
+        } else {
+            $catName = test_input($_POST['catName']);
+        }
+        if (empty($_POST['catDesc'])) {
+            $errMsgCatDesc = "Please enter category description";
+        } else {
+            $catDesc = test_input($_POST['catDesc']);
+        }
+        if (empty($_POST['catIconUrl'])) {
+            $errMsgCatIconUrl = "Please enter category icon url";
+        } else {
+            $catIconUrl = test_input($_POST['catIconUrl']);
+        }
+
+        $catId = $_POST['catId'];
+
+        if($catId && $catName && $catDesc && $catIconUrl) {
+            $stmt = $mysqli->prepare("UPDATE `categories` SET `category_name` = ?, `category_description` = ?, `icon_url` = ? WHERE `categories`.`category_id` = ?;");
+            $stmt->bind_param("sssi", $catName, $catDesc, $catIconUrl, $catId);
+            $stmt->execute();
+            $categoryUpdateResult = $stmt->get_result();
+        }
+
+    }
+
+    if(isset($_POST['catDelete'])){
+        $catId = $_POST['catDeleteId'];
+
+        $stmt = $mysqli->prepare("DELETE FROM `categories` WHERE `categories`.`category_id` = ?");
+        $stmt->bind_param("i", $catId);
+        $stmt->execute();
+        $categoryDeleteResult = $stmt->get_result();
+
+    }
+
+    if(isset($_POST['addCategory'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['catAddName'])) {
+            $errMsgCatName = "Please enter category name";
+        } else {
+            $catName = test_input($_POST['catAddName']);
+        }
+        if (empty($_POST['catAddDesc'])) {
+            $errMsgCatDesc = "Please enter category description";
+        } else {
+            $catDesc = test_input($_POST['catAddDesc']);
+        }
+        if (empty($_POST['catAddIconUrl'])) {
+            $errMsgCatIconUrl = "Please enter category icon url";
+        } else {
+            $catIconUrl = test_input($_POST['catAddIconUrl']);
+        }
+
+        if($catName && $catDesc && $catIconUrl) {
+            $stmt = $mysqli->prepare("INSERT INTO `categories` (`category_name`, `category_description`, `icon_url`) VALUES (?, ?, ?);");
+            $stmt->bind_param("sss", $catName, $catDesc, $catIconUrl);
+            $stmt->execute();
+            $categoryUpdateResult = $stmt->get_result();
+        }
+
+    }
+
     // CATEGORIES
     $stmt =  $mysqli->prepare("SELECT * FROM `categories`");
     $stmt->execute();
     $categoriesFetchingResult = $stmt->get_result();
     $categoriesFetchingArray = mysqli_fetch_all($categoriesFetchingResult, MYSQLI_ASSOC);
+
+    // print_r($categoriesFetchingArray);
 
     // COMMENTS
     $stmt =  $mysqli->prepare("SELECT * FROM `comments`");
@@ -107,22 +192,23 @@
                     <tbody>
                     <?php foreach($categoriesFetchingArray as $categories => $category): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($category['category_id']) ?></td>
-                        <td><?php echo htmlspecialchars($category['category_name']) ?></td>
-                        <td><?php echo substr(htmlspecialchars($category['category_description']), 0, 50) ?>....</td>
-                        <td><?php echo htmlspecialchars($category['icon_url']) ?></td>
+                        <td class="cat_id"><?php echo htmlspecialchars($category['category_id']) ?></td>
+                        <td class="cat_name"><?php echo htmlspecialchars($category['category_name']) ?></td>
+                        <td class="cat_desc"><?php echo substr(htmlspecialchars($category['category_description']), 0, 50) ?>....</td>
+                        <td class="cat_icon_url"><?php echo htmlspecialchars($category['icon_url']) ?></td>
                         <td><?php echo htmlspecialchars($category['category_createdat']) ?></td>
                         <td>
-                            <button class="dashboard-edit-btn">Edit</button>
-                            <form action="">
-                                <button class="dashboard-delete-btn">Delete</button>
+                            <button class="dashboard-edit-btn" class="openCategoryUpdateModal">Edit</button>
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" >
+                                <input type="hidden" name="catDeleteId" value="<?php echo htmlspecialchars($category['category_id']) ?>">
+                                <button class="dashboard-delete-btn" name="catDelete" value="catDeleted">Delete</button>
                             </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <button id="openCategoryModal"  class="add-btn">+ Add Category</button>
+                <button id="openAddCategoryModal"  class="add-cat-btn add-btn">+ Add Category</button>
             </div>
             <div class="tabcontent" id="Comments">
                 <h1>Comments</h1>
@@ -235,61 +321,37 @@
             </div>
         </div>
     </main>
-    <div id="categoryModal" class="modal">
+    <div id="categoryUpdateModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Category</h1>
-          <form id="categoryForm" class="dashboardForm">
-            <input type="number" placeholder="Id" class="input id">
-            <input type="text" placeholder="Name" class="input name">
-            <!-- <input type="text" placeholder="Description" class="input description" /> -->
-            <textarea name="" id="" class="input" placeholder="Description" cols="60" rows="10"></textarea>
-            <input type="text" placeholder="Icon Url" class="input icon-url">
-            <input type="submit" class="input" id="addCategory" value="+ Add Category">
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryForm" class="dashboardForm">
+            <input type="hidden" name="catId" class="cat-id">
+            <input type="text" placeholder="Name" name="catName" class="input cat-name">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatName) ?></span>
+            <textarea name="catDesc" class="input cat-desc" placeholder="Description" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatDesc) ?></span>
+            <input type="text" name="catIconUrl" placeholder="Icon Url" class="input cat-icon-url">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatIconUrl) ?></span>
+            <input type="submit" name="updateCategory" class="input" id="updateCategory" value="+ Update Category">
+          </form>
+        </div>
+    </div>
+    <div id="categoryAddModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">Category</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryForm" class="dashboardForm">
+            <input type="text" placeholder="Name" name="catAddName" class="input cat-add-name">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatName) ?></span>
+            <textarea name="catAddDesc" class="input cat-add-desc" placeholder="Description" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatDesc) ?></span>
+            <input type="text" name="catAddIconUrl" placeholder="Icon Url" class="input cat-add-icon-url">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatIconUrl) ?></span>
+            <input type="submit" name="addCategory" class="input" id="addCategory" value="+ Add Category">
           </form>
         </div>
     </div>
     <?php include "./partials/_footer.php" ?>
-    <script>
-
-        $(document).ready( function () {
-            $('.myTable').DataTable();
-        } );                  
-
-    const categoryModal = document.getElementById("categoryModal");
-    const categoryBtn = document.getElementById("openCategoryModal");
-    const addCategory = document.getElementById("add-category");
-
-    categoryBtn.addEventListener("click", () => {
-        categoryModal.style.display = "flex";
-    });
-
-    window.onclick = function (event) {
-    if (event.target == categoryModal) {
-        categoryModal.style.display = "none";
-    }
-    };
-
-    function openTab(evt, cityName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-
-        // Show the current tab, and add an "active" class to the link that opened the tab
-        document.getElementById(cityName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-    </script>
+    <script src="./script/dashboard.js"></script>
     <script src="./script/app.js"></script>
 </body>
 

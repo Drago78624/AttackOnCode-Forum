@@ -196,3 +196,10 @@ body {
 .dashboardForm .input:active, .input:focus {
   border-bottom-color: var(--red-2) !important;
 }
+
+.err-msg {
+  display: block;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  color: #ff5d6d;
+}
