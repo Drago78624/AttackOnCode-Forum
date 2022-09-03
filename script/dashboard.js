@@ -26,7 +26,9 @@ function openTab(evt, cityName) {
 const categoryUpdateModal = document.getElementById("categoryUpdateModal");
 const commentUpdateModal = document.getElementById("commentUpdateModal");
 const categoryAddModal = document.getElementById("categoryAddModal");
+const commentAddModal = document.getElementById("commentAddModal");
 const addCatBtn = document.querySelector(".add-cat-btn");
+const addComBtn = document.querySelector(".add-com-btn");
 
 window.onclick = function (event) {
   if (event.target == categoryUpdateModal) {
@@ -43,6 +45,10 @@ window.onclick = function (event) {
 
 addCatBtn.addEventListener("click", ()=>{
   categoryAddModal.style.display = "flex"
+})
+
+addComBtn.addEventListener("click", ()=>{
+  commentAddModal.style.display = "flex"
 })
 
 const editBtns = document.querySelectorAll(".dashboard-edit-btn");

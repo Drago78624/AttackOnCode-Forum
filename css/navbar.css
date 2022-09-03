@@ -59,7 +59,7 @@ html {
 }
 
 .text-overflow {
-  max-width: 500px;
+  max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

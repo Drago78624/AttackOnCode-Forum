@@ -85,7 +85,7 @@
             $stmt = $mysqli->prepare("INSERT INTO `categories` (`category_name`, `category_description`, `icon_url`) VALUES (?, ?, ?);");
             $stmt->bind_param("sss", $catName, $catDesc, $catIconUrl);
             $stmt->execute();
-            $categoryUpdateResult = $stmt->get_result();
+            $categoryAddResult = $stmt->get_result();
         }
 
     }
@@ -98,6 +98,89 @@
 
     // COMMENTS
     $comId = $comContent = $comCode = $comThreadId = $comUserId = $errMsgComContent = $errMsgComCode = $errMsgComThreadId = $errMsgComUserId = "";
+
+    if(isset($_POST['updateComment'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['comContent'])) {
+            $errMsgComContent = "Please enter a comment";
+        } else {
+            $comContent = test_input($_POST['comContent']);
+        }
+        if (empty($_POST['comThreadId'])) {
+            $errMsgComThreadId = "Please enter thread id";
+        } else {
+            $comThreadId = test_input($_POST['comThreadId']);
+        }
+        if (empty($_POST['comUserId'])) {
+            $errMsgComUserId = "Please enter user id";
+        } else {
+            $comUserId = test_input($_POST['comUserId']);
+        }
+
+        $comCode = test_input($_POST['comCode']); 
+        $comId = $_POST['comId'];
+
+        if($comId && $comContent && $comThreadId && $comUserId) {
+            $stmt = $mysqli->prepare("UPDATE `comments` SET `comment_content` = ?, `comment_code` = '$comCode', `thread_id` = ?, `user_id` = ? WHERE `comments`.`comment_id` = ?;");
+            $stmt->bind_param("siii", $comContent, $comThreadId, $comUserId, $comId);
+            $stmt->execute();
+            $commentUpdateResult = $stmt->get_result();
+        }
+
+    }
+
+    if(isset($_POST['comDelete'])){
+        $comId = $_POST['comDeleteId'];
+
+        $stmt = $mysqli->prepare("DELETE FROM `comments` WHERE `comments`.`comment_id` = ?");
+        $stmt->bind_param("i", $comId);
+        $stmt->execute();
+        $comDeleteResult = $stmt->get_result();
+
+    }
+
+    if(isset($_POST['addComment'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['comAddContent'])) {
+            $errMsgComContent= "Please enter comment";
+        } else {
+            $comContent = test_input($_POST['comAddContent']);
+        }
+        if (empty($_POST['comAddThreadId'])) {
+            $errMsgComThreadId = "Please enter thread id";
+        } else {
+            $comThreadId = test_input($_POST['comAddThreadId']);
+        }
+        if (empty($_POST['comAddUserId'])) {
+            $errMsgComUserId = "Please enter user id";
+        } else {
+            $comUserId = test_input($_POST['comAddUserId']);
+        }
+
+        $comCode = test_input($_POST['comAddCode']);
+
+        if($comContent && $comThreadId && $comUserId) {
+            $stmt = $mysqli->prepare("INSERT INTO `comments` (`comment_content`, `comment_code`, `thread_id`, `user_id`) VALUES (?, ?, ?, ?);");
+            $stmt->bind_param("ssii", $comContent, $comCode, $comThreadId, $comUserId);
+            $stmt->execute();
+            $commentAddResult = $stmt->get_result();
+        }
+
+    }
     
     $stmt =  $mysqli->prepare("SELECT * FROM `comments`");
     $stmt->execute();
@@ -199,7 +282,7 @@
                         <td class="cat_icon_url"><?php echo htmlspecialchars($category['icon_url']) ?></td>
                         <td><?php echo htmlspecialchars($category['category_createdat']) ?></td>
                         <td>
-                            <button class="dashboard-edit-btn" class="openCategoryUpdateModal">Edit</button>
+                            <button class="dashboard-edit-btn">Edit</button>
                             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" >
                                 <input type="hidden" name="catDeleteId" value="<?php echo htmlspecialchars($category['category_id']) ?>">
                                 <button class="dashboard-delete-btn" name="catDelete" value="catDeleted">Delete</button>
@@ -236,15 +319,16 @@
                         <td><?php echo htmlspecialchars($comment['timestamp']) ?></td>
                         <td>
                             <button class="dashboard-edit-btn">Edit</button>
-                            <form action="">
-                                <button class="dashboard-delete-btn">Delete</button>
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" >
+                                <input type="hidden" name="comDeleteId" value="<?php echo htmlspecialchars($comment['comment_id']) ?>">
+                                <button class="dashboard-delete-btn" name="comDelete" value="comDeleted">Delete</button>
                             </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <button class="add-btn">+ Add Comment</button>
+                <button id="openAddCategoryModal" class="add-com-btn add-btn">+ Add Comment</button>
             </div>
             <div class="tabcontent" id="Threads">
                 <h1>Threads</h1>
@@ -374,14 +458,16 @@
     <div id="commentAddModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Category</h1>
-          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryForm" class="dashboardForm">
-            <input type="text" placeholder="Name" name="catAddName" class="input cat-add-name">
-            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatName) ?></span>
-            <textarea name="catAddDesc" class="input cat-add-desc" placeholder="Description" cols="60" rows="10"></textarea>
-            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatDesc) ?></span>
-            <input type="text" name="catAddIconUrl" placeholder="Icon Url" class="input cat-add-icon-url">
-            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatIconUrl) ?></span>
-            <input type="submit" name="addCategory" class="input" id="addCategory" value="+ Add Category">
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="comForm" class="dashboardForm">
+            <input type="text" placeholder="Comment" name="comAddContent" class="input com-add-content">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComContent) ?></span>
+            <textarea name="comAddCode" class="input com-add-code" placeholder="Code" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComCode) ?></span>
+            <input type="number" name="comAddThreadId" placeholder="Thread Id" class="input com-add-thread-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComThreadId) ?></span>
+            <input type="number" name="comAddUserId" placeholder="User Id" class="input com-add-user-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComUserId) ?></span>
+            <input type="submit" name="addComment" class="input" id="addComment" value="+ Add Comment">
           </form>
         </div>
     </div>
