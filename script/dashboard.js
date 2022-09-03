@@ -25,10 +25,12 @@ function openTab(evt, cityName) {
 
 const categoryUpdateModal = document.getElementById("categoryUpdateModal");
 const commentUpdateModal = document.getElementById("commentUpdateModal");
+const threadUpdateModal = document.getElementById("threadUpdateModal");
 const categoryAddModal = document.getElementById("categoryAddModal");
 const commentAddModal = document.getElementById("commentAddModal");
 const addCatBtn = document.querySelector(".add-cat-btn");
 const addComBtn = document.querySelector(".add-com-btn");
+const addThreadBtn = document.querySelector(".add-thread-btn");
 
 window.onclick = function (event) {
   if (event.target == categoryUpdateModal) {
@@ -41,6 +43,11 @@ window.onclick = function (event) {
   }else if(event.target == commentAddModal){
     commentAddModal.style.display = "none";
   }
+  if (event.target == threadUpdateModal) {
+    threadUpdateModal.style.display = "none";
+  }else if(event.target == threadAddModal){
+    threadAddModal.style.display = "none";
+  }
 };
 
 addCatBtn.addEventListener("click", ()=>{
@@ -49,6 +56,10 @@ addCatBtn.addEventListener("click", ()=>{
 
 addComBtn.addEventListener("click", ()=>{
   commentAddModal.style.display = "flex"
+})
+
+addThreadBtn.addEventListener("click", ()=>{
+  threadAddModal.style.display = "flex"
 })
 
 const editBtns = document.querySelectorAll(".dashboard-edit-btn");
@@ -61,6 +72,12 @@ const comContent = document.querySelector(".com-content");
 const comCode = document.querySelector(".com-code");
 const comThreadId = document.querySelector(".com-thread-id");
 const comUserId = document.querySelector(".com-user-id");
+const threadId = document.querySelector(".thread-id");
+const threadTitle = document.querySelector(".thread-title");
+const threadDesc = document.querySelector(".thread-desc");
+const threadCode = document.querySelector(".thread-code");
+const threadCategoryId = document.querySelector(".thread-category-id");
+const threadUserId = document.querySelector(".thread-user-id");
 
 Array.from(editBtns).forEach((editBtn) => {
   editBtn.addEventListener("click", (e) => {
@@ -87,6 +104,20 @@ Array.from(editBtns).forEach((editBtn) => {
       comCode.value = com_code.innerText;
       comThreadId.value = com_thread_id.innerText;
       comUserId.value = com_user_id.innerText;
+    }else if(tr.classList.contains("thread-row")){
+      threadUpdateModal.style.display = "flex";
+      const thread_id = tr.querySelector(".thread_id");
+      const thread_title = tr.querySelector(".thread_title");
+      const thread_desc = tr.querySelector(".thread_desc");
+      const thread_code = tr.querySelector(".thread_code");
+      const thread_category_id = tr.querySelector(".thread_category_id");
+      const thread_user_id = tr.querySelector(".thread_user_id");
+      threadId.value = thread_id.innerText;
+      threadTitle.value = thread_title.innerText;
+      threadDesc.value = thread_desc.innerText;
+      threadCode.value = thread_code.innerText;
+      threadCategoryId.value = thread_category_id.innerText;
+      threadUserId.value = thread_user_id.innerText;
     }
   });
 });

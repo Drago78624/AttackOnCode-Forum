@@ -188,6 +188,101 @@
     $commentsFetchingArray = mysqli_fetch_all($commentsFetchingResult, MYSQLI_ASSOC);
 
     // THREADS
+    $threadId = $threadTitle = $threadDesc = $threadCode = $threadCategoryId = $threadUserId = $errMsgThreadTitle = $errMsgThreadCode = $errMsgThreadDesc  = $errMsgThreadCategoryId = $errMsgThreadUserId = "";
+
+    if(isset($_POST['updateThread'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['threadTitle'])) {
+            $errMsgThreadTitle = "Please enter thread title";
+        } else {
+            $threadTitle = test_input($_POST['threadTitle']);
+        }
+        if (empty($_POST['threadDesc'])) {
+            $errMsgThreadDesc = "Please enter description";
+        } else {
+            $threadDesc = test_input($_POST['threadDesc']);
+        }
+        if (empty($_POST['threadCategoryId'])) {
+            $errMsgThreadCategoryId = "Please enter category id";
+        } else {
+            $threadCategoryId = test_input($_POST['threadCategoryId']);
+        }
+        if (empty($_POST['threadUserId'])) {
+            $errMsgThreadUserId = "Please enter user id";
+        } else {
+            $threadUserId = test_input($_POST['threadUserId']);
+        }
+
+        $threadCode = $_POST['threadCode'];
+        $threadId = $_POST['threadId'];
+
+        if($threadId && $threadTitle && $threadDesc && $threadCategoryId && $threadUserId) {
+            $stmt = $mysqli->prepare("UPDATE `threads` SET `thread_title` = ?, `thread_desc` = ?, `thread_code` = ?, `thread_cat_id` = ?, `thread_user_id` = ? WHERE `threads`.`thread_id` = ?;");
+            $stmt->bind_param("sssiii", $threadTitle, $threadDesc, $threadCode, $threadCategoryId, $threadUserId, $threadId);
+            $stmt->execute();
+            $threadUpdateResult = $stmt->get_result();
+        }
+
+    }
+
+    if(isset($_POST['threadDelete'])){
+        $threadId = $_POST['threadDeleteId'];
+
+        $stmt = $mysqli->prepare("DELETE FROM `threads` WHERE `threads`.`thread_id` = ?");
+        $stmt->bind_param("i", $threadId);
+        $stmt->execute();
+        $threadDeleteResult = $stmt->get_result();
+
+    }
+
+    if(isset($_POST['addThread'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['threadAddTitle'])) {
+            $errMsgThreadTitle= "Please enter thread title";
+        } else {
+            $threadTitle = test_input($_POST['threadAddTitle']);
+        }
+        if (empty($_POST['threadAddDesc'])) {
+            $errMsgThreadDesc = "Please enter thread id";
+        } else {
+            $threadDesc = test_input($_POST['threadAddDesc']);
+        }
+        if (empty($_POST['threadAddCategoryId'])) {
+            $errMsgThreadCategoryId = "Please enter user id";
+        } else {
+            $threadCategoryId = test_input($_POST['threadAddCategoryId']);
+        }
+        if (empty($_POST['threadAddUserId'])) {
+            $errMsgThreadUserId = "Please enter user id";
+        } else {
+            $threadUserId = test_input($_POST['threadAddUserId']);
+        }
+
+        $threadCode = test_input($_POST['threadAddCode']);
+
+        if($threadTitle && $threadDesc && $threadCategoryId && $threadUserId) {
+            $stmt = $mysqli->prepare("INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_code`, `thread_cat_id`, `thread_user_id`) VALUES (?, ?, ?, ?, ?);");
+            $stmt->bind_param("sssii", $threadTitle, $threadDesc, $threadCode, $threadCategoryId, $threadUserId);
+            $stmt->execute();
+            $threadAddResult = $stmt->get_result();
+        }
+
+    }
+
     $stmt =  $mysqli->prepare("SELECT * FROM `threads`");
     $stmt->execute();
     $threadsFetchingResult = $stmt->get_result();
@@ -347,25 +442,26 @@
                     </thead>
                     <tbody>
                     <?php foreach($threadsFetchingArray as $threads => $thread): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($thread['thread_id']) ?></td>
-                        <td><?php echo substr(htmlspecialchars($thread['thread_title']), 0, 50) ?>....</td>
-                        <td><?php echo substr(htmlspecialchars($thread['thread_desc']), 0, 50) ?>....</td>
-                        <td><?php echo substr(htmlspecialchars($thread['thread_code']), 0, 50) ?>....</td>
-                        <td><?php echo htmlspecialchars($thread['thread_cat_id']) ?></td>
-                        <td><?php echo htmlspecialchars($thread['thread_user_id']) ?></td>
+                    <tr class="thread-row">
+                        <td class="thread_id"><?php echo htmlspecialchars($thread['thread_id']) ?></td>
+                        <td class="thread_title text-overflow"><?php echo htmlspecialchars($thread['thread_title']) ?></td>
+                        <td class="thread_desc text-overflow"><?php echo htmlspecialchars($thread['thread_desc']) ?></td>
+                        <td class="thread_code text-overflow"><?php echo htmlspecialchars($thread['thread_code']) ?></td>
+                        <td class="thread_category_id"><?php echo htmlspecialchars($thread['thread_cat_id']) ?></td>
+                        <td class="thread_user_id"><?php echo htmlspecialchars($thread['thread_user_id']) ?></td>
                         <td><?php echo htmlspecialchars($thread['timestamp']) ?></td>
                         <td>
                             <button class="dashboard-edit-btn">Edit</button>
-                            <form action="">
-                                <button class="dashboard-delete-btn">Delete</button>
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" >
+                                <input type="hidden" name="threadDeleteId" value="<?php echo htmlspecialchars($thread['thread_id']) ?>">
+                                <button class="dashboard-delete-btn" name="threadDelete" value="threadDeleted">Delete</button>
                             </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <button class="add-btn">+ Add Thread</button>
+                <button class="add-thread-btn add-btn">+ Add Thread</button>
             </div>
             <div class="tabcontent" id="Users">
                 <h1>Users</h1>
@@ -440,7 +536,7 @@
     <!-- COMMENTS MODALS -->
     <div id="commentUpdateModal" class="modal">
         <div class="modal-content">
-            <h1 class="dashboardFormHeading">Comments</h1>
+            <h1 class="dashboardFormHeading">Comment</h1>
           <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="commentsForm" class="dashboardForm">
             <input type="hidden" name="comId" class="com-id">
             <input type="text" placeholder="Comment Content" name="comContent" class="input com-content">
@@ -457,7 +553,7 @@
     </div>
     <div id="commentAddModal" class="modal">
         <div class="modal-content">
-            <h1 class="dashboardFormHeading">Category</h1>
+            <h1 class="dashboardFormHeading">Comment</h1>
           <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="comForm" class="dashboardForm">
             <input type="text" placeholder="Comment" name="comAddContent" class="input com-add-content">
             <span class="err-msg"><?php echo htmlspecialchars($errMsgComContent) ?></span>
@@ -468,6 +564,45 @@
             <input type="number" name="comAddUserId" placeholder="User Id" class="input com-add-user-id">
             <span class="err-msg"><?php echo htmlspecialchars($errMsgComUserId) ?></span>
             <input type="submit" name="addComment" class="input" id="addComment" value="+ Add Comment">
+          </form>
+        </div>
+    </div>
+
+    <!-- THREADS MODALS -->
+    <div id="threadUpdateModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">Thread</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="threadForm" class="dashboardForm">
+            <input type="hidden" name="threadId" class="thread-id">
+            <input type="text" placeholder="Thread Title" name="threadTitle" class="input thread-title">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadTitle) ?></span>
+            <textarea name="threadDesc" class="input thread-desc" placeholder="Thread Description" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadDesc) ?></span>
+            <textarea name="threadCode" class="input thread-code" placeholder="Thread Code" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadCode) ?></span>
+            <input type="number" name="threadCategoryId" placeholder="Thread Id" class="input thread-category-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadCategoryId) ?></span>
+            <input type="number" name="threadUserId" placeholder="User Id" class="input thread-user-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadUserId) ?></span>
+            <input type="submit" name="updateThread" class="input" id="updateThread" value="+ Update Thread">
+          </form>
+        </div>
+    </div>
+    <div id="threadAddModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">Thread</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="threadForm" class="dashboardForm">
+            <input type="text" placeholder="Thread Title" name="threadAddTitle" class="input thread-add-title">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadTitle) ?></span>
+            <textarea name="threadAddDesc" class="input thread-add-desc" placeholder="Description" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadDesc) ?></span>
+            <textarea name="threadAddCode" class="input thread-add-code" placeholder="Code" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadCode) ?></span>
+            <input type="number" name="threadAddCategoryId" placeholder="Category Id" class="input thread-add-category-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadCategoryId) ?></span>
+            <input type="number" name="threadAddUserId" placeholder="User Id" class="input thread-add-user-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadUserId) ?></span>
+            <input type="submit" name="addThread" class="input" id="addThread" value="+ Add Thread">
           </form>
         </div>
     </div>
