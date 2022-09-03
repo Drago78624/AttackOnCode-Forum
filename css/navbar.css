@@ -58,6 +58,13 @@ html {
   scroll-behavior: smooth;
 }
 
+.text-overflow {
+  max-width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 body {
   /* font-family: "Inter", sans-serif; */
   /* font-family: 'Inconsolata', monospace; */

@@ -7,6 +7,7 @@
         header("Location: index.php");
     }
 
+    // CATEGORIES
     $catId = $catName = $catDesc = $catIconUrl = $errMsgCatName = $errMsgCatDesc = $errMsgCatIconUrl = "";
 
     if(isset($_POST['updateCategory'])){
@@ -89,15 +90,15 @@
 
     }
 
-    // CATEGORIES
     $stmt =  $mysqli->prepare("SELECT * FROM `categories`");
     $stmt->execute();
     $categoriesFetchingResult = $stmt->get_result();
     $categoriesFetchingArray = mysqli_fetch_all($categoriesFetchingResult, MYSQLI_ASSOC);
 
-    // print_r($categoriesFetchingArray);
 
     // COMMENTS
+    $comId = $comContent = $comCode = $comThreadId = $comUserId = $errMsgComContent = $errMsgComCode = $errMsgComThreadId = $errMsgComUserId = "";
+    
     $stmt =  $mysqli->prepare("SELECT * FROM `comments`");
     $stmt->execute();
     $commentsFetchingResult =  $stmt->get_result();
@@ -191,10 +192,10 @@
                     </thead>
                     <tbody>
                     <?php foreach($categoriesFetchingArray as $categories => $category): ?>
-                    <tr>
+                    <tr class="category-row">
                         <td class="cat_id"><?php echo htmlspecialchars($category['category_id']) ?></td>
                         <td class="cat_name"><?php echo htmlspecialchars($category['category_name']) ?></td>
-                        <td class="cat_desc"><?php echo substr(htmlspecialchars($category['category_description']), 0, 50) ?>....</td>
+                        <td class="cat_desc text-overflow"><?php echo htmlspecialchars($category['category_description']) ?></td>
                         <td class="cat_icon_url"><?php echo htmlspecialchars($category['icon_url']) ?></td>
                         <td><?php echo htmlspecialchars($category['category_createdat']) ?></td>
                         <td>
@@ -226,12 +227,12 @@
                     </thead>
                     <tbody>
                     <?php foreach($commentsFetchingArray as $comments => $comment): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($comment['comment_id']) ?></td>
-                        <td><?php echo substr(htmlspecialchars($comment['comment_content']), 0, 50) ?>....</td>
-                        <td><?php echo substr(htmlspecialchars($comment['comment_code']), 0, 50) ?>....</td>
-                        <td><?php echo htmlspecialchars($comment['thread_id']) ?></td>
-                        <td><?php echo htmlspecialchars($comment['user_id']) ?></td>
+                    <tr class="comment-row">
+                        <td class="com_id"><?php echo htmlspecialchars($comment['comment_id']) ?></td>
+                        <td class="text-overflow com_content"><?php echo htmlspecialchars($comment['comment_content']) ?></td>
+                        <td class="text-overflow com_code"><?php echo htmlspecialchars($comment['comment_code']) ?></td>
+                        <td class="com_thread_id"><?php echo htmlspecialchars($comment['thread_id']) ?></td>
+                        <td class="com_user_id"><?php echo htmlspecialchars($comment['user_id']) ?></td>
                         <td><?php echo htmlspecialchars($comment['timestamp']) ?></td>
                         <td>
                             <button class="dashboard-edit-btn">Edit</button>
@@ -321,6 +322,7 @@
             </div>
         </div>
     </main>
+    <!-- CATEGORY MODALS -->
     <div id="categoryUpdateModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Category</h1>
@@ -337,6 +339,39 @@
         </div>
     </div>
     <div id="categoryAddModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">Category</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryForm" class="dashboardForm">
+            <input type="text" placeholder="Name" name="catAddName" class="input cat-add-name">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatName) ?></span>
+            <textarea name="catAddDesc" class="input cat-add-desc" placeholder="Description" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatDesc) ?></span>
+            <input type="text" name="catAddIconUrl" placeholder="Icon Url" class="input cat-add-icon-url">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgCatIconUrl) ?></span>
+            <input type="submit" name="addCategory" class="input" id="addCategory" value="+ Add Category">
+          </form>
+        </div>
+    </div>
+
+    <!-- COMMENTS MODALS -->
+    <div id="commentUpdateModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">Comments</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="commentsForm" class="dashboardForm">
+            <input type="hidden" name="comId" class="com-id">
+            <input type="text" placeholder="Comment Content" name="comContent" class="input com-content">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComContent) ?></span>
+            <textarea name="comCode" class="input com-code" placeholder="Comment Code" cols="60" rows="10"></textarea>
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComCode) ?></span>
+            <input type="number" name="comThreadId" placeholder="Thread Id" class="input com-thread-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComThreadId) ?></span>
+            <input type="number" name="comUserId" placeholder="User Id" class="input com-user-id">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgComUserId) ?></span>
+            <input type="submit" name="updateComment" class="input" id="updateComment" value="+ Update Comment">
+          </form>
+        </div>
+    </div>
+    <div id="commentAddModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Category</h1>
           <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryForm" class="dashboardForm">
