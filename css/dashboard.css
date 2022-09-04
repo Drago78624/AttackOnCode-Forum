@@ -25,6 +25,7 @@ body {
   padding: 20px 20px 0 20px;
   color: var(--nav-bg);
   cursor: pointer;
+  display: none;
 }
 
 @media screen and (max-width: 83.75rem) {
@@ -35,6 +36,9 @@ body {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
     left: -100%;
     margin: 0 0 0 20px;
+  }
+  .sidebar-btn {
+    display: inline-block;
   }
 }
 
