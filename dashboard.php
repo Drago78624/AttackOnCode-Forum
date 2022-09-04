@@ -289,6 +289,118 @@
     $threadsFetchingArray = mysqli_fetch_all($threadsFetchingResult, MYSQLI_ASSOC);
 
     // USERS
+    $userId = $userName = $userEmail = $userPassword = $userStatus = $userType = $errMsgUserName = $errMsgUserEmail = $errMsgUserPassword = $errMsgUserStatus = $errMsgUserType = "";
+
+    if(isset($_POST['updateUser'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['userName'])) {
+            $errMsgUserName = "Please enter your name";
+        } else {
+            $userName = test_input($_POST['userName']);
+        }
+        if (empty($_POST['userEmail'])) {
+            $errMsgUserEmail = "Please enter an email";
+        } else {
+            if (!filter_var($_POST['userEmail'], FILTER_VALIDATE_EMAIL)) {
+                $errMsgUserEmail = "Please enter a valid email";
+            } else {
+                $userEmail = test_input($_POST['userEmail']);
+            }
+        }
+        if (empty($_POST['userPassword'])) {
+            $errMsgUserPassword = "Please enter a password";
+        } else {
+            $userPassword = test_input($_POST['userPassword']);
+            $hash = password_hash($userPassword, PASSWORD_DEFAULT);
+        }
+        if (empty($_POST['userStatus'])) {
+            $errMsgUserStatus = "please enter user status (active or inactive)";
+        } else {
+            $userStatus = test_input($_POST['userStatus']);
+        }
+        if (empty($_POST['userType'])) {
+            $errMsgUserType = "please enter user type (admin or user)";
+        } else {
+            $userType = test_input($_POST['userType']);
+        }
+
+        $userId = $_POST['userId'];
+
+        if($userId && $userName && $userEmail && $userPassword && $userStatus && $userType) {
+            $stmt = $mysqli->prepare("UPDATE `users` SET `user_name` = ?, `user_email` = ?, `user_password` = ?, `status` = ?, `user_type` = ? WHERE `users`.`user_id` = ?;");
+            $stmt->bind_param("sssssi", $userName, $userEmail, $hash, $userStatus, $userType, $userId);
+            $stmt->execute();
+            $userUpdateResult = $stmt->get_result();
+        }
+
+    }
+
+    if(isset($_POST['userDelete'])){
+        $userId = $_POST['userDeleteId'];
+
+        $stmt = $mysqli->prepare("DELETE FROM `users` WHERE `users`.`user_id` = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $userDeleteResult = $stmt->get_result();
+
+    }
+
+    if(isset($_POST['addUser'])){
+        function test_input($data)
+        {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (empty($_POST['userAddName'])) {
+            $errMsgUserName = "Please enter your name";
+        } else {
+            $userName = test_input($_POST['userAddName']);
+        }
+        if (empty($_POST['userAddEmail'])) {
+            $errMsgUserEmail = "Please enter an email";
+        } else {
+            if (!filter_var($_POST['userAddEmail'], FILTER_VALIDATE_EMAIL)) {
+                $errMsgUserEmail = "Please enter a valid email";
+            } else {
+                $userEmail = test_input($_POST['userAddEmail']);
+            }
+        }
+        if (empty($_POST['userAddPassword'])) {
+            $errMsgUserPassword = "Please enter a password";
+        } else {
+            $userPassword = test_input($_POST['userAddPassword']);
+            $hash = password_hash($userPassword, PASSWORD_DEFAULT);
+        }
+        if (empty($_POST['userAddStatus'])) {
+            $errMsgUserStatus = "please enter user status (active or inactive)";
+        } else {
+            $userStatus = test_input($_POST['userAddStatus']);
+        }
+        if (empty($_POST['userAddType'])) {
+            $errMsgUserType = "please enter user type (admin or user)";
+        } else {
+            $userType = test_input($_POST['userAddType']);
+        }
+
+        if($userName && $userEmail && $userPassword && $userStatus && $userType) {
+            $stmt = $mysqli->prepare("INSERT INTO `users` (`user_name`, `user_email`, `user_password`, `status`, `user_type`) VALUES (?, ?, ?, ?, ?);");
+            $stmt->bind_param("sssss", $userName, $userEmail, $hash, $userStatus, $userType);
+            $stmt->execute();
+            $userAddResult = $stmt->get_result();
+        }
+
+    }
+
     $stmt = $mysqli->prepare("SELECT * FROM `users`");
     $stmt->execute();
     $usersFetchingResult = $stmt->get_result();
@@ -480,25 +592,26 @@
                     </thead>
                     <tbody>
                     <?php foreach($usersFetchingArray as $users => $user): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($user['user_id']) ?></td>
-                        <td><?php echo htmlspecialchars($user['user_name']) ?>....</td>
-                        <td><?php echo htmlspecialchars($user['user_email']) ?>....</td>
-                        <td><?php echo substr(htmlspecialchars($user['user_password']), 0, 50) ?>....</td>
-                        <td><?php echo htmlspecialchars($user['status']) ?></td>
-                        <td><?php echo htmlspecialchars($user['user_type']) ?></td>
+                    <tr class="user-row">
+                        <td class="user_id"><?php echo htmlspecialchars($user['user_id']) ?></td>
+                        <td class="user_name"><?php echo htmlspecialchars($user['user_name']) ?></td>
+                        <td class="user_email"><?php echo htmlspecialchars($user['user_email']) ?></td>
+                        <td class="user_password text-overflow"><?php echo htmlspecialchars($user['user_password']) ?></td>
+                        <td class="user_status"><?php echo htmlspecialchars($user['status']) ?></td>
+                        <td class="user_type"><?php echo htmlspecialchars($user['user_type']) ?></td>
                         <td><?php echo htmlspecialchars($user['timestamp']) ?></td>
                         <td>
                             <button class="dashboard-edit-btn">Edit</button>
-                            <form action="">
-                                <button class="dashboard-delete-btn">Delete</button>
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" >
+                                <input type="hidden" name="userDeleteId" value="<?php echo htmlspecialchars($user['user_id']) ?>">
+                                <button class="dashboard-delete-btn" name="userDelete" value="userDeleted">Delete</button>
                             </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <button class="add-btn">+ Add User</button>
+                <button class="add-user-btn add-btn">+ Add User</button>
             </div>
         </div>
     </main>
@@ -521,7 +634,7 @@
     <div id="categoryAddModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Category</h1>
-          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryForm" class="dashboardForm">
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="categoryAddForm" class="dashboardForm">
             <input type="text" placeholder="Name" name="catAddName" class="input cat-add-name">
             <span class="err-msg"><?php echo htmlspecialchars($errMsgCatName) ?></span>
             <textarea name="catAddDesc" class="input cat-add-desc" placeholder="Description" cols="60" rows="10"></textarea>
@@ -554,7 +667,7 @@
     <div id="commentAddModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Comment</h1>
-          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="comForm" class="dashboardForm">
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="commentsAddForm" class="dashboardForm">
             <input type="text" placeholder="Comment" name="comAddContent" class="input com-add-content">
             <span class="err-msg"><?php echo htmlspecialchars($errMsgComContent) ?></span>
             <textarea name="comAddCode" class="input com-add-code" placeholder="Code" cols="60" rows="10"></textarea>
@@ -591,7 +704,7 @@
     <div id="threadAddModal" class="modal">
         <div class="modal-content">
             <h1 class="dashboardFormHeading">Thread</h1>
-          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="threadForm" class="dashboardForm">
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="threadAddForm" class="dashboardForm">
             <input type="text" placeholder="Thread Title" name="threadAddTitle" class="input thread-add-title">
             <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadTitle) ?></span>
             <textarea name="threadAddDesc" class="input thread-add-desc" placeholder="Description" cols="60" rows="10"></textarea>
@@ -603,6 +716,45 @@
             <input type="number" name="threadAddUserId" placeholder="User Id" class="input thread-add-user-id">
             <span class="err-msg"><?php echo htmlspecialchars($errMsgThreadUserId) ?></span>
             <input type="submit" name="addThread" class="input" id="addThread" value="+ Add Thread">
+          </form>
+        </div>
+    </div>
+
+    <!-- USERS MODALS -->
+    <div id="userUpdateModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">User</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="userForm" class="dashboardForm">
+            <input type="hidden" name="userId" class="user-id">
+            <input type="text" placeholder="Name" name="userName" class="input user-name">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserName) ?></span>
+            <input type="email" placeholder="Email" name="userEmail" class="input user-email">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserEmail) ?></span>
+            <input type="password" placeholder="Password" name="userPassword" class="input user-password">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserPassword) ?></span>
+            <input type="text" name="userStatus" placeholder="Status" class="input user-status">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserStatus) ?></span>
+            <input type="text" name="userType" placeholder="Type" class="input user-type">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserType) ?></span>
+            <input type="submit" name="updateUser" class="input" id="updateUser" value="+ Update User">
+          </form>
+        </div>
+    </div>
+    <div id="userAddModal" class="modal">
+        <div class="modal-content">
+            <h1 class="dashboardFormHeading">User</h1>
+          <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST" id="userAddForm" class="dashboardForm">
+            <input type="text" placeholder="Name" name="userAddName" class="input user-add-name">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserName) ?></span>
+            <input type="email" placeholder="Email" name="userAddEmail" class="input user-add-email">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserEmail) ?></span>
+            <input type="password" placeholder="Password" name="userAddPassword" class="input user-add-password">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserPassword) ?></span>
+            <input type="text" name="userAddStatus" placeholder="Status" class="input user-add-status">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserStatus) ?></span>
+            <input type="text" name="userAddType" placeholder="Type" class="input user-add-type">
+            <span class="err-msg"><?php echo htmlspecialchars($errMsgUserType) ?></span>
+            <input type="submit" name="addUser" class="input" id="addUser" value="+ Add User">
           </form>
         </div>
     </div>

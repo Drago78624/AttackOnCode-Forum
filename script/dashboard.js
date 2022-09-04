@@ -26,11 +26,14 @@ function openTab(evt, cityName) {
 const categoryUpdateModal = document.getElementById("categoryUpdateModal");
 const commentUpdateModal = document.getElementById("commentUpdateModal");
 const threadUpdateModal = document.getElementById("threadUpdateModal");
+const userUpdateModal = document.getElementById("userUpdateModal");
 const categoryAddModal = document.getElementById("categoryAddModal");
 const commentAddModal = document.getElementById("commentAddModal");
+const userAddModal = document.getElementById("userAddModal");
 const addCatBtn = document.querySelector(".add-cat-btn");
 const addComBtn = document.querySelector(".add-com-btn");
 const addThreadBtn = document.querySelector(".add-thread-btn");
+const addUserBtn = document.querySelector(".add-user-btn");
 
 window.onclick = function (event) {
   if (event.target == categoryUpdateModal) {
@@ -48,6 +51,11 @@ window.onclick = function (event) {
   }else if(event.target == threadAddModal){
     threadAddModal.style.display = "none";
   }
+  if (event.target == userUpdateModal) {
+    userUpdateModal.style.display = "none";
+  }else if(event.target == userAddModal){
+    userAddModal.style.display = "none";
+  }
 };
 
 addCatBtn.addEventListener("click", ()=>{
@@ -60,6 +68,10 @@ addComBtn.addEventListener("click", ()=>{
 
 addThreadBtn.addEventListener("click", ()=>{
   threadAddModal.style.display = "flex"
+})
+
+addUserBtn.addEventListener("click", ()=>{
+  userAddModal.style.display = "flex"
 })
 
 const editBtns = document.querySelectorAll(".dashboard-edit-btn");
@@ -78,6 +90,12 @@ const threadDesc = document.querySelector(".thread-desc");
 const threadCode = document.querySelector(".thread-code");
 const threadCategoryId = document.querySelector(".thread-category-id");
 const threadUserId = document.querySelector(".thread-user-id");
+const userId = document.querySelector(".user-id");
+const userName = document.querySelector(".user-name");
+const userEmail = document.querySelector(".user-email");
+const userStatus = document.querySelector(".user-status");
+const userType = document.querySelector(".user-type");
+
 
 Array.from(editBtns).forEach((editBtn) => {
   editBtn.addEventListener("click", (e) => {
@@ -118,6 +136,18 @@ Array.from(editBtns).forEach((editBtn) => {
       threadCode.value = thread_code.innerText;
       threadCategoryId.value = thread_category_id.innerText;
       threadUserId.value = thread_user_id.innerText;
+    }else if(tr.classList.contains("user-row")){
+      userUpdateModal.style.display = "flex";
+      const user_id = tr.querySelector(".user_id");
+      const user_name = tr.querySelector(".user_name");
+      const user_email = tr.querySelector(".user_email");
+      const user_status = tr.querySelector(".user_status");
+      const user_type = tr.querySelector(".user_type");
+      userId.value = user_id.innerText;
+      userName.value = user_name.innerText;
+      userEmail.value = user_email.innerText;
+      userStatus.value = user_status.innerText;
+      userType.value = user_type.innerText;
     }
   });
 });
