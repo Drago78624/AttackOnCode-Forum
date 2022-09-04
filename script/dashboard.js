@@ -2,6 +2,8 @@ $(document).ready(function () {
   $(".myTable").DataTable();
 });
 
+const sidebar = document.querySelector(".sidebar")
+
 function openTab(evt, cityName) {
   // Declare all variables
   var i, tabcontent, tablinks;
@@ -21,6 +23,7 @@ function openTab(evt, cityName) {
   // Show the current tab, and add an "active" class to the link that opened the tab
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+  sidebar.classList.remove("active")
 }
 
 const categoryUpdateModal = document.getElementById("categoryUpdateModal");
@@ -151,3 +154,10 @@ Array.from(editBtns).forEach((editBtn) => {
     }
   });
 });
+
+const sidebarBtn = document.querySelector(".sidebar-btn")
+
+
+sidebarBtn.addEventListener("click", ()=>{
+  sidebar.classList.toggle("active")
+})
